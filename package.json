@@ -1,0 +1,38 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "Zerobias white label login artifacts",
+  "main": "server.js",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "build": "lerna run build",
+    "lerna:dry-run": "lerna version --no-git-tag-version --no-push --conventional-commits",
+    "lerna:publish": "lerna publish --conventional-commits --no-verify-access",
+    "lerna:test": "lerna run test",
+    "lerna:version": "lerna version --no-git-tag-version --no-push --conventional-commits --yes",
+    "nx:publish": "lerna run nx:publish --since && ./scripts/commit.sh",
+    "nx:prepublish": "echo \"No prepublish script\"",
+    "postinstall": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zerobias-org/login.git"
+  },
+  "author": "cstacer@zerobias.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zerobias-org/login/issues"
+  },
+  "homepage": "https://github.com/zerobias-org/login#readme",
+  "devDependencies": {
+    "@auditmation/devops-tools": "^0.17.0",
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
+    "eslint": "^8.6.0",
+    "husky": "^7.0.4",
+    "lerna": "^6.3.0",
+    "nx": "^15.4.2"
+  }
+}

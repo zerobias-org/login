@@ -1,0 +1,25 @@
+{
+  "affected": {
+    "defaultBase": "main"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test"],
+        "parallel": 12
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build", "lint"]
+    },
+    "test": {
+      "dependsOn": ["build"]
+    },
+    "nx:publish": {
+      "dependsOn": ["^nx:publish"]
+    }
+  }
+}
