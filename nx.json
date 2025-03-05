@@ -2,6 +2,30 @@
   "affected": {
     "defaultBase": "main"
   },
+  "workspaceLayout": {
+    "appsDir": "projects",
+    "libsDir": "projects"
+  },
+  "cli": {
+    "analytics": false
+  },
+  "generators": {
+    "@nx/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss",
+      "viewEncapsulation": "None"
+    }
+  },
+  "defaultProject": "client-library",
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",

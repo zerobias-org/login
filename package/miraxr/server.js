@@ -9,9 +9,9 @@ const { getLogger } = require('@auditmation/util-logger');
 
 const logger = getLogger('console');
 
-// const basePath = `${process.env.LOGIN_BASE_PATH || ''}/:domain`;
+const basePath = `${process.env.LOGIN_BASE_PATH || ''}/:domain`;
 // Comment previous line and uncomment next line for local dev
-const basePath = '';
+// const basePath = '';
 
 logger.info('Configuring with base path %s', basePath);
 
@@ -33,7 +33,7 @@ i18n.configure({
   },
 });
 
-// configure HBS
+// configure HBS handlebars
 const sdkPath = 'node_modules/@auditmation/dana-login-sdk/assets/';
 hbs.registerPartials(sdkPath + '/partials/', function (err) {
   if (err) {

@@ -4,10 +4,14 @@
   },
   "footer": {
     "privacy_policy": "Privacy Policy",
+    "privacy_policy_url": "https://miraxr.io",
     "terms_of_use": "Terms of Use",
+    "terms_of_use_url": "https://miraxr.io",
     "help": "Help",
+    "help_url": "https://miraxr.io",
     "copyright": "Copyright © 2025",
     "company": "Mira XR",
+    "company_url": "https://miraxr.io",
     "powered_by_logo": "/assets/images/powered-by-zb.png",
     "powered_by_alt": "ZeroBias"
   },
