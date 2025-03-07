@@ -17,6 +17,7 @@ There are some simple steps to take in order to ramp up your custom login applic
 3. `npm start` - This command is used to start the server.
 4. Navigate to `http://localhost:3001` to interact with the application.
 5. After making any changes to any of your customized templates, remember to stop the server, and re-run `npm start`.
+6. Remember to reverse the changes you made to `server.js` in step 2 when you have completed your customizations.
 
 ### Styles
 
