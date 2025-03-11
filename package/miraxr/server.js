@@ -75,7 +75,7 @@ router.use((req, res, next) => {
 // serve up assets
 router.use(
   `${basePath}/favicon.png`,
-  express.static(`${__dirname}/assets/visuals/favicon.png`));
+  express.static(`${__dirname}/assets/images/favicon.png`));
 router.use(
   `${basePath}/assets/lib`,
   express.static(`${__dirname}/node_modules/`,
