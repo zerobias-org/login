@@ -4,24 +4,23 @@ html {
 }
 
 body {
-  background-color: #000;
+  background-color: #0f1729;
   height: 100vh;
 }
 
 main {
-  background-color: transparent;
+  background-color: #242839;
   color: #eee;
   margin-left: -145px;
   min-height: 250px;
   height: auto;
-  width: 290px;
+  width: 300px;
   border: 2px solid rgba(255, 255, 255, .7);
   border-radius: 5px;
 }
 
 header {
   display:none;
-  background-color: #3c414a;
 }
 
 .switcher-container,
@@ -36,11 +35,16 @@ header {
 
 .text-container {
   color: rgba(255, 255, 255, 0.7);
-  text-align: center;
+  text-align: start;
   margin-bottom: 20px;
 }
 .text-container h2 {
   color: #fff;
+}
+.text-container p {
+  font-weight: bold;
+  color: white;
+  font-size: larger;
 }
 .input-container label {
   color: #fff;
@@ -87,7 +91,7 @@ button.primary {
   border-radius: 9999px;
   width: 100%;
   height: 46px;
-  background-color: #fff;
+  background-color: rgba(91,187,228);
   color: #000;
   border: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 14px;
@@ -123,12 +127,16 @@ button.primary {
   background: url("/assets/images/Logo.png");
   background-size: contain;
   background-repeat: no-repeat;
-  height: 48px;
-  max-width: 100%;
-  margin: 0 auto;
+  margin-top: 0px;
+  height: 240px;
+  max-width: 100%;  
 }
 button.secondary {
   margin-top: 15px;
   width: 100%;
   border-radius: 9999px;
+}
+
+footer {
+  display: none;
 }
