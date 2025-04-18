@@ -23,6 +23,6 @@
     "directory": "package/miraxr/"
   },
   "dependencies": {
-    "@auditmation/dana-login-sdk": "0.5.12"
+    "@auditmation/dana-login-sdk": "0.5.16"
   }
 }
