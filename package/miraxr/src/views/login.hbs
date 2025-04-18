@@ -1,0 +1,28 @@
+<section class="logo-container">
+    <img src="{{{org.avatar}}}" alt="{{{org.name}}}" height="30" />
+</section>
+<section class="input-container" id="login-partial">
+    <section class="text-container">
+        <p>
+            {{{__ "login.welcome_message"}}}
+        </p>
+    </section>
+
+    <label> {{{__ "login.login_form.email_label"}}}</label>
+    <i class="fa fa-envelope"></i>
+    <input type="email" class="email-input" placeholder="{{{__ "login.login_form.email_placeholder"}}}" id="email" autocomplete="off" autofocus/>
+
+</section>
+<section style="display:none;" id="provider-switcher-container" class="provider-switcher-container clearfix"></section>
+<section class="buttons-container">
+    <button class="primary disabled" id="login-btn">
+        {{{__ "login.login_form.next_btn"}}}
+    </button>
+    <button class="primary" id="back-btn-loginScreen" style="display: none;">
+        {{{__ "login.login_form.back_btn"}}}
+    </button>
+    <p class="err-container"></p>
+</section>
+<section class="link-container">
+    <a href="javascript: void(0)" id="shared-session-login-link">{{{__ "login.login_form.shared_session_login_label"}}}</a>
+</section>

@@ -1,6 +1,22 @@
 {
+  "org": {
+    "name": "Mira XR"
+  },
   "err": {
     "unknown": "Oh no! It looks like we've encountered an error. Please try again or contact the support team at support@miraxr.io"
+  },
+  "footer": {
+    "privacy_policy": "Privacy Policy",
+    "privacy_policy_url": "https://miraxr.io",
+    "terms_of_use": "Terms of Use",
+    "terms_of_use_url": "https://miraxr.io",
+    "help": "Help",
+    "help_url": "https://miraxr.io",
+    "copyright": "Copyright © 2025",
+    "company": "Mira XR",
+    "company_url": "https://miraxr.io",
+    "powered_by_logo": "/assets/visuals/powered-by-zb.png",
+    "powered_by_alt": "Mira XR"
   },
   "login": {
     "selectProvider": "Please select the Identity Provider for ",
@@ -40,18 +56,5 @@
   },
   "eula": {
     "accept": "Accept"
-  },
-  "footer": {
-    "powered_by_logo": "footer.powered_by_logo",
-    "powered_by_alt": "footer.powered_by_alt",
-    "privacy_policy_url": "footer.privacy_policy_url",
-    "privacy_policy": "footer.privacy_policy",
-    "terms_of_use_url": "footer.terms_of_use_url",
-    "terms_of_use": "footer.terms_of_use",
-    "help_url": "footer.help_url",
-    "help": "footer.help",
-    "copyright": "footer.copyright",
-    "company_url": "footer.company_url",
-    "company": "footer.company"
   }
 }

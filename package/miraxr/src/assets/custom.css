@@ -1,5 +1,5 @@
 html {
-  background: url("/assets/images/background.png");
+  background: url("/assets/visuals/background.png");
   background-size: cover;
 }
 
@@ -124,7 +124,7 @@ button.primary {
   display: none;
 }
 .logo-container {
-  background: url("/assets/images/Logo.png");
+  background: url("/assets/visuals/Logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 0px;
