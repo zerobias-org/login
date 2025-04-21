@@ -1,6 +1,6 @@
 {
   "name": "@zerobias-org/login-miraxr",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "team@zerobias.com",
   "license": "ISC",
   "description": "Login package for Mira XR",
@@ -23,6 +23,6 @@
     "directory": "package/miraxr/"
   },
   "dependencies": {
-    "@auditmation/dana-login-sdk": "0.5.19"
+    "@auditmation/dana-login-sdk": "0.6.2"
   }
 }
