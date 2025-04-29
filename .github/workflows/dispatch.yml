@@ -36,15 +36,15 @@ jobs:
         id: normalize
         run: |
           changed_dirs="${{ steps.changed.outputs.all_changed_files }}"
-          
+
           if [ -z "$changed_dirs" ]; then
             echo "CHANGED_APPS=" >> $GITHUB_ENV
             exit 0
           fi
-          
+
           # Remove 'package/' prefix
           apps=$(echo "$changed_dirs" | sed 's|package/||g')
-          
+
           echo "Normalized apps: $apps"
           echo "CHANGED_APPS=$apps" >> $GITHUB_ENV
 
@@ -67,23 +67,22 @@ jobs:
       - name: Dispatch deploy workflow for each app
         run: |
           export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-
-          IFS=',' read -ra APPS <<< "${{ steps.changed.outputs.dir_names }}"
-
+          
+          IFS=',' read -ra APPS <<< "$CHANGED_APPS"
+          
           if [ -z "${APPS[*]}" ]; then
             echo "✅ No apps changed, skipping deploy."
             exit 0
           fi
 
-          for path in "${APPS[@]}"; do
-            app_name=$(basename "$path")
+          for app_name in "${APPS[@]}"; do
             echo "🚀 Triggering deploy for $app_name"
 
             gh workflow run deploy.yml \
-              --ref "$BRANCH_NAME" \
+              --ref "${GITHUB_REF##*/}" \
               -f app-name="$app_name" \
-              -f env-name="$ENV_NAME" \
-              -f aws-account-id="$AWS_ACCOUNT_ID" \
-              -f s3-bucket="us-east-1-${ENV_NAME}-custom-ui" \
+              -f env-name="${ENV_NAME}" \
+              -f aws-account-id="${{ env.AWS_ACCOUNT_ID }}" \
+              -f s3-bucket="us-east-1-${GITHUB_REF##*/}-custom-ui" \
               --title "App Deploy - ${app_name}"
           done
