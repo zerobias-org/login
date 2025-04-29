@@ -78,7 +78,7 @@ jobs:
           for app_name in "${APPS[@]}"; do
             echo "🚀 Triggering deploy for $app_name"
 
-            gh workflow run deploy.yml \
+            gh workflow run deploy.yml --ref ${BRANCH} \
               --ref "${GITHUB_REF##*/}" \
               -f app-name="$app_name" \
               -f env-name="${ENV_NAME}" \
