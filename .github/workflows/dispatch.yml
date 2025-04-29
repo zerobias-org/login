@@ -30,8 +30,7 @@ jobs:
 
       - name: Debug changed outputs
         run: |
-          echo "🔎 All changed files: ${{ steps.changed.outputs.all_changed_files }}"
-          echo "🔎 Changed app directories: ${{ steps.changed.outputs.dir_names }}"
+          echo "🔎 Changed app directories: ${{ steps.changed.outputs.all_changed_files }}"
 
       - name: Get App Names
         id: normalize
