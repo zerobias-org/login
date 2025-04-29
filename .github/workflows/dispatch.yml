@@ -38,6 +38,12 @@ jobs:
             package/**
           base_sha: ${{ env.BASE_SHA }}
 
+      - name: Debug changed outputs
+        run: |
+          echo "🔎 BASE_SHA used: ${{ env.BASE_SHA }}"
+          echo "🔎 All changed files: ${{ steps.changed.outputs.all_changed_files }}"
+          echo "🔎 Changed app directories: ${{ steps.changed.outputs.dir_names }}"
+
       - name: Set environment context
         run: |
           BRANCH=${GITHUB_REF##*/}
