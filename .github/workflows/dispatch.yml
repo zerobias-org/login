@@ -33,6 +33,26 @@ jobs:
           echo "🔎 All changed files: ${{ steps.changed.outputs.all_changed_files }}"
           echo "🔎 Changed app directories: ${{ steps.changed.outputs.dir_names }}"
 
+      - name: Get App Names
+        id: normalize
+        run: |
+          changed_dirs="${{ steps.changed.outputs.all_changed_files }}"
+          
+          if [ -z "$changed_dirs" ]; then
+            echo "CHANGED_APPS=" >> $GITHUB_ENV
+            exit 0
+          fi
+          
+          # Remove 'package/' prefix
+          apps=$(echo "$changed_dirs" | sed 's|package/||g')
+          
+          echo "Normalized apps: $apps"
+          echo "CHANGED_APPS=$apps" >> $GITHUB_ENV
+
+      - name: Debug changed outputs
+        run: |
+          echo "🔎 All changed apps: ${{ env.CHANGED_APPS }}"
+
       - name: Set environment context
         run: |
           BRANCH=${GITHUB_REF##*/}
