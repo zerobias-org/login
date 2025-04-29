@@ -66,6 +66,7 @@ jobs:
 
       - name: Dispatch deploy workflow for each app
         run: |
+          set -x
           export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           
           IFS=',' read -ra APPS <<< "$CHANGED_APPS"
