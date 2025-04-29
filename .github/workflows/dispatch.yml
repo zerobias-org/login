@@ -22,8 +22,8 @@ jobs:
       - name: Get changed app folders
         id: changed
         uses: tj-actions/changed-files@v46
-#        with:
-#          dir_names: true
+        with:
+          dir_names: true
 #          dir_names_max_depth: 1
 #          files: |
 #            package/**
@@ -32,7 +32,7 @@ jobs:
       - name: Debug changed outputs
         run: |
           echo "🔎 All changed files: ${{ steps.changed.outputs.all_changed_files }}"
-#          echo "🔎 Changed app directories: ${{ steps.changed.outputs.dir_names }}"
+          echo "🔎 Changed app directories: ${{ steps.changed.outputs.dir_names }}"
 
       - name: Set environment context
         run: |
