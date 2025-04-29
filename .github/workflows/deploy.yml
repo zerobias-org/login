@@ -1,0 +1,39 @@
+name: Deploy App
+
+on:
+  workflow_dispatch:
+    inputs:
+      app-name:
+        description: 'Name of the application to deploy'
+        required: true
+        type: string
+      env-name:
+        description: 'Environment name (e.g., prod, dev, qa)'
+        required: true
+        type: string
+      aws-account-id:
+        description: 'AWS account ID for the deployment'
+        required: true
+        type: string
+      s3-bucket:
+        description: 'S3 bucket where the app will be deployed'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy app using composite action
+        uses: zerobias-org/devops/actions/static-s3-app-release@feature/s3-static-site-deploy # @TODO: Update reference
+        with:
+          app-name: ${{ github.event.inputs.app-name }}
+          app-base-path: package
+          s3-bucket: ${{ github.event.inputs.s3-bucket }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::${{ github.event.inputs.aws-account-id }}:role/DevOIDCRole
