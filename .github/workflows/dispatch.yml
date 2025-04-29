@@ -19,15 +19,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Determine base sha (safe fallback)
-        id: find-base
-        run: |
-          if [ -n "${{ github.event.before }}" ]; then
-            echo "BASE_SHA=${{ github.event.before }}" >> $GITHUB_ENV
-          else
-            echo "BASE_SHA=$(git rev-parse HEAD^1)" >> $GITHUB_ENV
-          fi
-
       - name: Get changed app folders
         id: changed
         uses: tj-actions/changed-files@v46
@@ -36,11 +27,10 @@ jobs:
           dir_names_max_depth: 1
           files: |
             package/**
-          base_sha: ${{ env.BASE_SHA }}
+          since_last_remote_commit: true
 
       - name: Debug changed outputs
         run: |
-          echo "🔎 BASE_SHA used: ${{ env.BASE_SHA }}"
           echo "🔎 All changed files: ${{ steps.changed.outputs.all_changed_files }}"
           echo "🔎 Changed app directories: ${{ steps.changed.outputs.dir_names }}"
 
