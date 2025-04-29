@@ -64,26 +64,26 @@ jobs:
             echo "AWS_ACCOUNT_ID=013360300799" >> $GITHUB_ENV
           fi
 
-#      - name: Dispatch deploy workflow for each app
-#        run: |
-#          export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-#
-#          IFS=',' read -ra APPS <<< "${{ steps.changed.outputs.dir_names }}"
-#
-#          if [ -z "${APPS[*]}" ]; then
-#            echo "✅ No apps changed, skipping deploy."
-#            exit 0
-#          fi
-#
-#          for path in "${APPS[@]}"; do
-#            app_name=$(basename "$path")
-#            echo "🚀 Triggering deploy for $app_name"
-#
-#            gh workflow run deploy.yml \
-#              --ref "$BRANCH_NAME" \
-#              -f app-name="$app_name" \
-#              -f env-name="$ENV_NAME" \
-#              -f aws-account-id="$AWS_ACCOUNT_ID" \
-#              -f s3-bucket="us-east-1-${ENV_NAME}-custom-ui" \
-#              --title "App Deploy - ${app_name}"
-#          done
+      - name: Dispatch deploy workflow for each app
+        run: |
+          export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+
+          IFS=',' read -ra APPS <<< "${{ steps.changed.outputs.dir_names }}"
+
+          if [ -z "${APPS[*]}" ]; then
+            echo "✅ No apps changed, skipping deploy."
+            exit 0
+          fi
+
+          for path in "${APPS[@]}"; do
+            app_name=$(basename "$path")
+            echo "🚀 Triggering deploy for $app_name"
+
+            gh workflow run deploy.yml \
+              --ref "$BRANCH_NAME" \
+              -f app-name="$app_name" \
+              -f env-name="$ENV_NAME" \
+              -f aws-account-id="$AWS_ACCOUNT_ID" \
+              -f s3-bucket="us-east-1-${ENV_NAME}-custom-ui" \
+              --title "App Deploy - ${app_name}"
+          done
