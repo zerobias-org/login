@@ -3,8 +3,8 @@ name: Dispatch Deploys
 on:
   push:
     branches: [main, qa, dev]
-#    paths:
-#      - 'package/*/**'
+    paths:
+      - 'package/*/**'
 
 permissions:
   contents: read
