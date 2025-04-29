@@ -78,8 +78,8 @@ jobs:
           for app_name in "${APPS[@]}"; do
             echo "🚀 Triggering deploy for $app_name"
 
-            gh workflow run deploy.yml --ref ${BRANCH} \
-              --ref "${GITHUB_REF##*/}" \
+            gh workflow run deploy.yml \
+              --ref "${GITHUB_REF_NAME}" \ # @TODO: Remove hardcoded referece to dev
               -f app-name="$app_name" \
               -f env-name="${ENV_NAME}" \
               -f aws-account-id="${{ env.AWS_ACCOUNT_ID }}" \
