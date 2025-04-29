@@ -79,9 +79,10 @@ jobs:
           for app_name in "${APPS[@]}"; do
             echo "🚀 Triggering deploy for $app_name"
 
-            gh workflow run --ref ${GITHUB_REF##*/} deploy.yml \
+            gh workflow run -r ${GITHUB_REF##*/} \
               -f app-name="$app_name" \
               -f env-name="${ENV_NAME}" \
               -f aws-account-id="${{ env.AWS_ACCOUNT_ID }}" \
-              -f s3-bucket="us-east-1-${GITHUB_REF##*/}-custom-ui"
+              -f s3-bucket="us-east-1-${GITHUB_REF##*/}-custom-ui" \
+              deploy.yml
           done
