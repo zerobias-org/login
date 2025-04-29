@@ -19,6 +19,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Determine base sha (safe fallback)
+        id: find-base
+        run: |
+          if [ -n "${{ github.event.before }}" ]; then
+            echo "BASE_SHA=${{ github.event.before }}" >> $GITHUB_ENV
+          else
+            echo "BASE_SHA=$(git rev-parse HEAD^1)" >> $GITHUB_ENV
+          fi
+
       - name: Get changed app folders
         id: changed
         uses: tj-actions/changed-files@v46
@@ -27,6 +36,7 @@ jobs:
           dir_names_max_depth: 1
           files: |
             package/**
+          base_sha: ${{ env.BASE_SHA }}
 
       - name: Set environment context
         run: |
@@ -45,21 +55,21 @@ jobs:
           export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
 
           IFS=',' read -ra APPS <<< "${{ steps.changed.outputs.dir_names }}"
-          
+
           if [ -z "${APPS[*]}" ]; then
-            echo "No apps changed, skipping dispatch."
+            echo "✅ No apps changed, skipping deploy."
             exit 0
           fi
 
           for path in "${APPS[@]}"; do
             app_name=$(basename "$path")
-            echo "Triggering deploy for $app_name"
+            echo "🚀 Triggering deploy for $app_name"
 
             gh workflow run deploy.yml \
               --ref "$BRANCH_NAME" \
               -f app-name="$app_name" \
               -f env-name="$ENV_NAME" \
               -f aws-account-id="$AWS_ACCOUNT_ID" \
-              -f s3-bucket="us-east-1-${ENV_NAME}-custom-ui"
+              -f s3-bucket="us-east-1-${ENV_NAME}-custom-ui" \
               --title "App Deploy - ${app_name}"
           done
