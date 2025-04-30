@@ -20,6 +20,9 @@ on:
         required: true
         type: string
 
+  repository_dispatch:
+    types: [deploy-app]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,6 +31,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Normalize input values
+        run: |
+          echo "APP_NAME=${{ github.event.inputs.app-name || github.event.client_payload.app_name }}" >> $GITHUB_ENV
+          echo "ENV_NAME=${{ github.event.inputs.env-name || github.event.client_payload.env_name }}" >> $GITHUB_ENV
+          echo "AWS_ACCOUNT_ID=${{ github.event.inputs.aws-account-id || github.event.client_payload.aws_account_id }}" >> $GITHUB_ENV
+          echo "S3_BUCKET=${{ github.event.inputs.s3-bucket || github.event.client_payload.s3_bucket }}" >> $GITHUB_ENV
+
+      - name: Debug resolved input values
+        run: |
+          echo "App Name: $APP_NAME"
+          echo "Env Name: $ENV_NAME"
+          echo "AWS Account ID: $AWS_ACCOUNT_ID"
+          echo "S3 Bucket: $S3_BUCKET"
 
       - name: Deploy app using composite action
         uses: zerobias-org/devops/actions/static-s3-app-release@feature/s3-static-site-deploy # @TODO: Update reference
