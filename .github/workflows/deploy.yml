@@ -42,13 +42,13 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Configure npm for GitHub Packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
-          echo "@auditmation:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+      - name: Export ZB_TOKEN to environment
+        run: echo "ZB_TOKEN=${ZB_TOKEN}" >> $GITHUB_ENV
         shell: bash
+        env:
+          ZB_TOKEN: ${{ secrets.ZB_TOKEN }}
 
-      - name: Deploy app using composite action
+      - name: Deploy app
         uses: zerobias-org/devops/actions/static-s3-app-release@feature/s3-static-site-deploy
         with:
           app-name: ${{ env.APP_NAME }}
