@@ -48,7 +48,7 @@ jobs:
           echo "Normalized apps: $apps"
           echo "CHANGED_APPS=$apps" >> $GITHUB_ENV
 
-      - name: Debug changed outputs
+      - name: Debug changed apps
         run: |
           echo "🔎 All changed apps: ${{ env.CHANGED_APPS }}"
 
@@ -64,34 +64,29 @@ jobs:
             echo "AWS_ACCOUNT_ID=013360300799" >> $GITHUB_ENV
           fi
 
-      - name: Dispatch deploy event for each app
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const apps = process.env.CHANGED_APPS.split(',');
-            const envName = process.env.ENV_NAME;
-            const awsAccountId = process.env.AWS_ACCOUNT_ID;
-            const ref = process.env.TARGET_REF;
-            
-            for (const appName of apps) {
-              console.log(`🚀 Dispatching deploy for app: ${appName}`);
-            
-              await github.rest.repos.createDispatchEvent({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                event_type: "deploy-app",
-                client_payload: {
-                  app_name: appName,
-                  env_name: envName,
-                  aws_account_id: awsAccountId,
-                  s3_bucket: `us-east-1-${envName}-custom-ui`,
-                  ref: ref
-                }
-              });
-            }
+      - name: Dispatch deploy workflow for each app
+        run: |
+          set -x
+          export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          IFS=',' read -ra APPS <<< "$CHANGED_APPS"
+
+          if [ -z "${APPS[*]}" ]; then
+            echo "✅ No apps changed, skipping deploy."
+            exit 0
+          fi
+
+          for app_name in "${APPS[@]}"; do
+            echo "🚀 Triggering deploy for $app_name"
+
+            gh workflow run deploy.yml \
+              --ref "${GITHUB_REF_NAME}" \
+              -f app-name="$app_name" \
+              -f env-name="${ENV_NAME}" \
+              -f aws-account-id="${AWS_ACCOUNT_ID}" \
+              -f s3-bucket="us-east-1-${ENV_NAME}-custom-ui"
+          done
         env:
           CHANGED_APPS: ${{ env.CHANGED_APPS }}
           ENV_NAME: ${{ env.ENV_NAME }}
           AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
-          TARGET_REF: ${{ env.TARGET_REF }}
-
+          GITHUB_REF_NAME: ${{ github.ref_name }}
