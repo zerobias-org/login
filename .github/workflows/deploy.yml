@@ -29,10 +29,10 @@ jobs:
       ENV_NAME: ${{ github.event.inputs.env-name }}
       AWS_ACCOUNT_ID: ${{ github.event.inputs.aws-account-id }}
       S3_BUCKET: ${{ github.event.inputs.s3-bucket }}
+      NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
     steps:
       - name: Debug input values
-        shell: bash
         run: |
           echo "📦 App: $APP_NAME"
           echo "🌍 Env: $ENV_NAME"
@@ -41,6 +41,12 @@ jobs:
 
       - name: Checkout source code
         uses: actions/checkout@v4
+
+      - name: Configure npm for GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
+          echo "@auditmation:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+        shell: bash
 
       - name: Deploy app using composite action
         uses: zerobias-org/devops/actions/static-s3-app-release@feature/s3-static-site-deploy
