@@ -23,12 +23,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     env:
       AWS_REGION: us-east-1
       APP_NAME: ${{ github.event.inputs.app-name }}
       ENV_NAME: ${{ github.event.inputs.env-name }}
       AWS_ACCOUNT_ID: ${{ github.event.inputs.aws-account-id }}
       S3_BUCKET: ${{ github.event.inputs.s3-bucket }}
+      ZB_TOKEN : ${{ secrets.ZB_TOKEN }}
 
     steps:
       - name: Debug input values
@@ -41,10 +43,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Export ZB_TOKEN to environment
-        run: echo "ZB_TOKEN=${{ secrets.ZB_TOKEN }}" >> $GITHUB_ENV
-        shell: bash
-
       - name: Deploy app
         uses: zerobias-org/devops/actions/static-s3-app-release@feature/s3-static-site-deploy
         with:
@@ -52,4 +50,4 @@ jobs:
           app-base-path: package
           s3-bucket: ${{ env.S3_BUCKET }}
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/DevOIDCRole
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-${{ github.event.inputs.env-name }}-custom-ui-deploy
