@@ -32,6 +32,7 @@ jobs:
 
     steps:
       - name: Debug input values
+        shell: bash
         run: |
           echo "📦 App: $APP_NAME"
           echo "🌍 Env: $ENV_NAME"

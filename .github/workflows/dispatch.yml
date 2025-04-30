@@ -29,11 +29,13 @@ jobs:
             package/**
 
       - name: Debug changed outputs
+        shell: bash
         run: |
           echo "🔎 Changed app directories: ${{ steps.changed.outputs.all_changed_files }}"
 
       - name: Get App Names
         id: normalize
+        shell: bash
         run: |
           changed_dirs="${{ steps.changed.outputs.all_changed_files }}"
 
@@ -49,10 +51,12 @@ jobs:
           echo "CHANGED_APPS=$apps" >> $GITHUB_ENV
 
       - name: Debug changed apps
+        shell: bash
         run: |
           echo "🔎 All changed apps: ${{ env.CHANGED_APPS }}"
 
       - name: Set environment context
+        shell: bash
         run: |
           BRANCH=${GITHUB_REF##*/}
           echo "BRANCH_NAME=$BRANCH" >> $GITHUB_ENV
@@ -65,6 +69,7 @@ jobs:
           fi
 
       - name: Dispatch deploy workflow for each app
+        shell: bash
         run: |
           set -x
           export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
