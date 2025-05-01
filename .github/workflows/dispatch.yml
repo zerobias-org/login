@@ -38,7 +38,7 @@ jobs:
         id: normalize
         shell: bash
         run: |
-          changed_dirs="${{ steps.changed.outputs.all_changed_files }}"
+          changed_dirs="${{ steps.changed.outputs.all_modified_files }}"
 
           if [ -z "$changed_dirs" ]; then
             echo "CHANGED_APPS=" >> $GITHUB_ENV
