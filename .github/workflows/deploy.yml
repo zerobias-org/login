@@ -1,0 +1,98 @@
+name: Deploy App
+
+on:
+  workflow_dispatch:
+    inputs:
+      app-name:
+        description: 'Name of the application to deploy'
+        required: true
+        type: string
+      env-name:
+        description: 'Environment name (e.g., prod, dev, qa)'
+        required: true
+        type: string
+      aws-account-id:
+        description: 'AWS account ID for the deployment'
+        required: true
+        type: string
+      s3-bucket:
+        description: 'S3 bucket where the app will be deployed'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      APP_NAME: ${{ github.event.inputs.app-name }}
+      ENV_NAME: ${{ github.event.inputs.env-name }}
+      AWS_ACCOUNT_ID: ${{ github.event.inputs.aws-account-id }}
+      S3_BUCKET: ${{ github.event.inputs.s3-bucket }}
+      ZB_TOKEN : ${{ secrets.ZB_TOKEN }}
+
+    steps:
+      - name: Debug input values
+        run: |
+          echo "📦 App: $APP_NAME"
+          echo "🌍 Env: $ENV_NAME"
+          echo "🏦 Account: $AWS_ACCOUNT_ID"
+          echo "🪣 Bucket: $S3_BUCKET"
+
+      - name: import secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          method: jwt
+          url: ${{ secrets.VAULT_ADDR }}
+          role: publishing-role
+          path: gh-actions
+          secrets: |
+            operations-kv/data/ci/slack releasesWebhook | SLACK_RELEASES_WEBHOOK ;
+
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Deploy app
+        uses: zerobias-org/devops/actions/static-s3-app-release@feature/s3-static-site-deploy
+        with:
+          app-name: ${{ env.APP_NAME }}
+          app-base-path: package
+          s3-bucket: ${{ env.S3_BUCKET }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-zb-org-login-${{ github.event.inputs.env-name }}-custom-ui
+
+      - name: Release Announcement
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":gear: new ${{ github.repository }} artifacts published :tada:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.APP_NAME }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_RELEASES_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
