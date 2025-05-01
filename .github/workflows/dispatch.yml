@@ -24,7 +24,6 @@ jobs:
         uses: tj-actions/changed-files@v46
         with:
           dir_names: true
-          include_deleted: true
           dir_names_max_depth: 2
           files: |
             package/**
