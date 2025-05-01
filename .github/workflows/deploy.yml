@@ -54,4 +54,4 @@ jobs:
           app-base-path: package
           s3-bucket: ${{ env.S3_BUCKET }}
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-${{ github.event.inputs.env-name }}-custom-ui-deploy
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-zb-org-login-${{ github.event.inputs.env-name }}-custom-ui-s3-rw
