@@ -24,6 +24,7 @@ jobs:
         uses: tj-actions/changed-files@v46
         with:
           dir_names: true
+          include_deleted: true
           dir_names_max_depth: 2
           files: |
             package/**
@@ -31,7 +32,7 @@ jobs:
       - name: Debug changed outputs
         shell: bash
         run: |
-          echo "🔎 Changed app directories: ${{ steps.changed.outputs.all_changed_files }}"
+          echo "🔎 Changed app directories: ${{ steps.changed.outputs.all_modified_files }}"
 
       - name: Get App Names
         id: normalize
