@@ -15,7 +15,6 @@ jobs:
   detect-and-dispatch:
     runs-on: ubuntu-latest
     steps:
-
       - name: Set environment context
         shell: bash
         run: |
@@ -38,7 +37,6 @@ jobs:
           path: gh-actions
           secrets: |
             operations-kv/data/aws/${{ env.AWS_ACCOUNT_NAME }} accountId | AWS_ACCOUNT_ID ;
-            operations-kv/data/ci/slack releasesWebhook | SLACK_RELEASES_WEBHOOK ;
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -108,34 +106,3 @@ jobs:
           ENV_NAME: ${{ env.ENV_NAME }}
           AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
-
-      - name: Release Announcement
-        id: slack
-        uses: slackapi/slack-github-action@v1.25.0
-        with:
-          payload: |
-            {
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": ":gear: new ${{ github.repository }} artifacts published :tada:",
-                    "emoji": true
-                  }
-                },
-                {
-                  "type": "divider"
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "${{ env.CHANGED_APPS }}"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ env.SLACK_RELEASES_WEBHOOK }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

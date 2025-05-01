@@ -44,6 +44,16 @@ jobs:
           echo "🏦 Account: $AWS_ACCOUNT_ID"
           echo "🪣 Bucket: $S3_BUCKET"
 
+      - name: import secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          method: jwt
+          url: ${{ secrets.VAULT_ADDR }}
+          role: publishing-role
+          path: gh-actions
+          secrets: |
+            operations-kv/data/ci/slack releasesWebhook | SLACK_RELEASES_WEBHOOK ;
+
       - name: Checkout source code
         uses: actions/checkout@v4
 
@@ -55,3 +65,34 @@ jobs:
           s3-bucket: ${{ env.S3_BUCKET }}
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-zb-org-login-${{ github.event.inputs.env-name }}-custom-ui
+
+      - name: Release Announcement
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":gear: new ${{ github.repository }} artifacts published :tada:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.APP_NAME }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_RELEASES_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
