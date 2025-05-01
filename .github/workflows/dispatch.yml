@@ -16,6 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Set environment context
+        shell: bash
+        run: |
+          BRANCH=${GITHUB_REF##*/}
+          echo "BRANCH_NAME=$BRANCH" >> $GITHUB_ENV
+          if [[ "$BRANCH" == "main" ]]; then
+            echo "ENV_NAME=prod" >> $GITHUB_ENV
+            echo "AWS_ACCOUNT_NAME=prod" >> $GITHUB_ENV
+          else
+            echo "ENV_NAME=$BRANCH" >> $GITHUB_ENV
+            echo "AWS_ACCOUNT_NAME=dev" >> $GITHUB_ENV
+          fi
+
       - name: import secrets
         uses: hashicorp/vault-action@v2.4.3
         with:
@@ -24,8 +37,7 @@ jobs:
           role: publishing-role
           path: gh-actions
           secrets: |
-            operations-kv/data/ci/github readPackagesToken | READ_TOKEN ;
-            operations-kv/data/ci/slack devopsNotifications | SLACK_DEVOPS_NOTIFICATIONS ;
+            operations-kv/data/aws/${{ env.AWS_ACCOUNT_NAME }} accountId | AWS_ACCOUNT_ID ;
             operations-kv/data/ci/slack releasesWebhook | SLACK_RELEASES_WEBHOOK ;
 
       - name: Checkout code
@@ -69,19 +81,6 @@ jobs:
         run: |
           echo "🔎 All changed apps: ${{ env.CHANGED_APPS }}"
 
-      - name: Set environment context
-        shell: bash
-        run: |
-          BRANCH=${GITHUB_REF##*/}
-          echo "BRANCH_NAME=$BRANCH" >> $GITHUB_ENV
-          if [[ "$BRANCH" == "main" ]]; then
-            echo "ENV_NAME=prod" >> $GITHUB_ENV
-            echo "AWS_ACCOUNT_ID=237041882429" >> $GITHUB_ENV
-          else
-            echo "ENV_NAME=$BRANCH" >> $GITHUB_ENV
-            echo "AWS_ACCOUNT_ID=013360300799" >> $GITHUB_ENV
-          fi
-
       - name: Dispatch deploy workflow for each app
         shell: bash
         run: |
@@ -109,3 +108,34 @@ jobs:
           ENV_NAME: ${{ env.ENV_NAME }}
           AWS_ACCOUNT_ID: ${{ env.AWS_ACCOUNT_ID }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
+
+      - name: Release Announcement
+        id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":gear: new ${{ github.repository }} artifacts published :tada:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.CHANGED_APPS }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_RELEASES_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
