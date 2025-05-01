@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy app
-        uses: zerobias-org/devops/actions/static-s3-app-release@feature/s3-static-site-deploy
+        uses: zerobias-org/devops/actions/static-s3-app-release@main
         with:
           app-name: ${{ env.APP_NAME }}
           app-base-path: package
