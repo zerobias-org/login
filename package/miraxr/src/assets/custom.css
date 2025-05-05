@@ -14,7 +14,7 @@ main {
   margin-left: -145px;
   min-height: 250px;
   height: auto;
-  width: 300px;
+  width: 350px;
   border: 2px solid rgba(255, 255, 255, .7);
   border-radius: 5px;
 }
@@ -99,6 +99,19 @@ button.primary {
   font-weight: 500;
 }
 
+.register-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4;
+}
+
+.register-container a {
+  font-weight: bold;
+}
+
 .provider-switcher-tiles .switcher-item {
   width: 35%;
   border: 1px solid #60add7;
@@ -128,7 +141,8 @@ button.primary {
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 0px;
-  height: 240px;
+  margin-left: 30px;
+  height: 240px;  
   max-width: 100%;  
 }
 button.secondary {
