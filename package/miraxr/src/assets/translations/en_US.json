@@ -23,7 +23,7 @@
     "welcome_message": "Login",
     "login_form": {
       "email_label": "Email",
-      "email_placeholder": "jkeynes@cybercommand.io",
+      "email_placeholder": "jkeynes@gamified.ops",
       "next_btn": "Login",
       "back_btn": "Back",
       "shared_session_login_label": "Login with Shared Session Key",
