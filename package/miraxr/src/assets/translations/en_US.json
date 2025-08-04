@@ -31,10 +31,10 @@
     }
   },
   "shared_session": {
-    "welcome_message": "Please enter a valid Shared Session Key to log in to the Mira XR platform",
+    "welcome_message": "Please enter a valid Shared Session Key to log in to the Gamified OPS platform",
     "shared_session_form": {
       "key_label": "Shared Session Key",
-      "key_placeholder": "",
+      "key_placeholder": "enter Shared Session Key here",
       "next_btn": "Next",
       "back_btn": "Back"
     }

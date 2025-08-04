@@ -80,12 +80,15 @@ header {
   border-radius: 5px;
 }
 
-.link-container {
-  display: none;
-}
+
 
 .link-container a {
   color: #fff;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  height: 80px;
 }
 
 .input-container .content {
