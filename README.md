@@ -27,6 +27,6 @@ In the `/assets` folder, create your own `custom.css` file, and add a link to it
 
 ### Templates
 
-You should copy template files you wish to override from `node_modules/@auditmation/dana-login-sdk` `partials` and `views` folders to the `partials` and `views` folders of your custom project, then make any customization to your copied override files.  Remember to restart the local dev `server.js` after you make any changes to your overridden files. Place any other local assets as needed into your assets folder and reference them in your override files.
+You should copy template files you wish to override from `node_modules/@com/dana-login-sdk` `partials` and `views` folders to the `partials` and `views` folders of your custom project, then make any customization to your copied override files.  Remember to restart the local dev `server.js` after you make any changes to your overridden files. Place any other local assets as needed into your assets folder and reference them in your override files.
 
 The application will register the `partials` and `views` folders which can be used to define `handlebars` templates. Documentation for handlebars can be found on: `https://handlebarsjs.com/`.
