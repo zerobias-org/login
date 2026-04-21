@@ -4,7 +4,7 @@ This document explains how to run the custom login package locally for developme
 
 ## Prerequisites
 
-1. **Node.js** >= 16.0.0
+1. **Node.js** >= 22.21.1 (required by `@zerobias-com/dana-login-sdk@1.0.55+`)
 2. **ZB_TOKEN** environment variable set (for npm install)
 
 ### Setting ZB_TOKEN
