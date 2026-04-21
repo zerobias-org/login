@@ -27,11 +27,8 @@
     "directory": "package/w3geekery/"
   },
   "dependencies": {
-    "@zerobias-com/dana-login-sdk": "1.0.20",
+    "@zerobias-com/dana-login-sdk": "^1.0.55",
     "express": "^5.1.0",
     "http-proxy-middleware": "^3.0.5"
-  },
-  "overrides": {
-    "glob": "^8.1.0"
   }
 }
