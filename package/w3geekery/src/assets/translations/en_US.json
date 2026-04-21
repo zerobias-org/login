@@ -1,0 +1,60 @@
+{
+  "org": {
+    "name": "SME Mart"
+  },
+  "err": {
+    "unknown": "We've encountered an error. Please try again or contact support at support@zerobias.com"
+  },
+  "footer": {
+    "privacy_policy": "Privacy Policy",
+    "privacy_policy_url": "https://zerobias.com/privacy",
+    "terms_of_use": "Terms of Use",
+    "terms_of_use_url": "https://zerobias.com/terms",
+    "help": "Help",
+    "help_url": "https://zerobias.com/help",
+    "copyright": "Copyright &copy; 2026",
+    "company": "w3geekery / ZeroBias",
+    "company_url": "https://zerobias.com",
+    "powered_by_logo": "/assets/visuals/powered-by-zb.png",
+    "powered_by_alt": "Powered by ZeroBias"
+  },
+  "login": {
+    "selectProvider": "Please select the Identity Provider for ",
+    "welcome_message": "Sign in to SME Mart",
+    "login_form": {
+      "email_label": "Email",
+      "email_placeholder": "you@company.com",
+      "next_btn": "Continue",
+      "back_btn": "Back",
+      "shared_session_login_label": "Sign in with Session Key",
+      "navigate_to_login_label": "Sign in with SSO"
+    }
+  },
+  "shared_session": {
+    "welcome_message": "Enter your Shared Session Key to access SME Mart",
+    "shared_session_form": {
+      "key_label": "Session Key",
+      "key_placeholder": "Enter session key",
+      "next_btn": "Continue",
+      "back_btn": "Back"
+    }
+  },
+  "access_denied": {
+    "subtitle": "Access Denied",
+    "content": "Unable to process your request. Please contact support at support@zerobias.com"
+  },
+  "request_access": {
+    "subtitle": "Account Not Found",
+    "content": "There is no account registered for {{email}}. Click below to request access to SME Mart.",
+    "primary_cta": "Request Access",
+    "secondary_cta": "Back"
+  },
+  "session_expired": {
+    "subtitle": "Session Expired",
+    "content": "Your session has expired. Please sign in again.",
+    "primary_cta": "Sign In"
+  },
+  "eula": {
+    "accept": "Accept & Continue"
+  }
+}

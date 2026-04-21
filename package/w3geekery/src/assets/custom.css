@@ -1,0 +1,267 @@
+/* SME Mart Login Custom Styles */
+/* Brand colors from SME Mart theme */
+
+:root {
+  --sme-primary: #667eea;
+  --sme-primary-dark: #5a67d8;
+  --sme-primary-light: #818cf8;
+  --sme-secondary: #764ba2;
+  --sme-bg-dark: #0f172a;
+  --sme-bg-paper: #1e293b;
+  --sme-text-primary: #f1f5f9;
+  --sme-text-secondary: #94a3b8;
+}
+
+html {
+  background: linear-gradient(135deg, var(--sme-bg-dark) 0%, #1a1a2e 100%);
+  min-height: 100vh;
+}
+
+body {
+  background-color: transparent;
+  height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+main {
+  background-color: var(--sme-bg-paper);
+  color: var(--sme-text-primary);
+  margin-left: -175px;
+  min-height: 280px;
+  height: auto;
+  width: 350px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  padding: 32px;
+}
+
+header {
+  display: none;
+}
+
+/* Logo Section */
+.logo-container {
+  text-align: center;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-container img {
+  max-height: 48px;
+}
+
+.logo-container .app-title {
+  color: var(--sme-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--sme-primary-light) 0%, var(--sme-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Text Container */
+.text-container {
+  color: var(--sme-text-secondary);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.text-container h2 {
+  color: var(--sme-text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.text-container p {
+  font-weight: 500;
+  color: var(--sme-text-primary);
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+/* Input Container */
+.input-container label {
+  color: var(--sme-text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-container i {
+  color: var(--sme-text-secondary);
+  bottom: -8px;
+  font-size: 14px;
+}
+
+.input-container .shared-session-key-input,
+.input-container .email-input {
+  height: 48px;
+  font-size: 15px;
+  padding: 12px 12px 12px 36px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--sme-text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-container .email-input:focus,
+.input-container .shared-session-key-input:focus {
+  outline: none;
+  border-color: var(--sme-primary);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.input-container .email-input::placeholder,
+.input-container .shared-session-key-input::placeholder {
+  color: var(--sme-text-secondary);
+  opacity: 0.7;
+}
+
+/* Buttons */
+button.primary {
+  border-radius: 8px;
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(135deg, var(--sme-primary) 0%, var(--sme-secondary) 100%);
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 16px;
+}
+
+button.primary:hover:not(.disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+button.primary.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  margin-top: 12px;
+  width: 100%;
+  border-radius: 8px;
+  height: 48px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--sme-text-primary);
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+button.secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Provider Switcher */
+.switcher-container,
+.switcher-dropdown {
+  background: var(--sme-bg-paper);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.switcher-container label {
+  color: var(--sme-text-primary);
+}
+
+.provider-switcher-container {
+  margin-bottom: 16px;
+}
+
+.provider-switcher-tiles .switcher-item {
+  width: 45%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 5%;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.provider-switcher-tiles .switcher-item:hover {
+  border-color: var(--sme-primary);
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.provider-switcher-tiles .switcher-item label {
+  color: var(--sme-text-primary);
+  margin-left: 8px;
+}
+
+/* Link Container */
+.link-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.link-container a {
+  color: var(--sme-primary-light);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.link-container a:hover {
+  color: var(--sme-primary);
+  text-decoration: underline;
+}
+
+/* Error Container */
+.err-container {
+  color: #f87171;
+  font-size: 0.875rem;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.err-container:empty {
+  display: none;
+}
+
+/* Content/EULA */
+.input-container .content {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.02);
+  color: var(--sme-text-primary);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.markdown code,
+.markdown tt,
+.markdown pre {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* Footer */
+footer {
+  color: var(--sme-text-secondary);
+  font-size: 0.75rem;
+}
+
+footer a {
+  color: var(--sme-text-secondary);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--sme-primary-light);
+}
