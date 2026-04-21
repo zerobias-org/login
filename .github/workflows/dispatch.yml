@@ -2,7 +2,7 @@ name: Dispatch Deploys
 
 on:
   push:
-    branches: [main, qa, dev]
+    branches: [main, qa, dev, uat]
     paths:
       - 'package/*/**'
 
