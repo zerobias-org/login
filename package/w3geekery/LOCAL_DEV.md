@@ -224,3 +224,18 @@ The build process (`npm run build`) generates the `dist/` folder which contains 
 5. Update metadata in `src/assets/metadata.json`
 6. Run `npm run dev` to test locally
 7. Run `npm run build` to generate production `dist/` folder
+
+## CI / Deploy Notes
+
+The `uat` (and other environment) deploys assume an IAM role whose name is
+namespaced by GitHub org:
+
+| Repo | Role name pattern |
+|---|---|
+| `zerobias-com/login` (platform) | `gh-login-{env}-custom-ui` |
+| `zerobias-org/login` (this repo) | `gh-zb-org-login-{env}-custom-ui` |
+
+The `zb-org` infix distinguishes this repo's trust policy from the
+platform-login repo's. If a deploy fails at the OIDC
+`AssumeRoleWithWebIdentity` step, verify `.github/workflows/deploy.yml`
+references the `gh-zb-org-login-*` form.
