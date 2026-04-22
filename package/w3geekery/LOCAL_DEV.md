@@ -239,3 +239,21 @@ The `zb-org` infix distinguishes this repo's trust policy from the
 platform-login repo's. If a deploy fails at the OIDC
 `AssumeRoleWithWebIdentity` step, verify `.github/workflows/deploy.yml`
 references the `gh-zb-org-login-*` form.
+
+### Branch -> AWS account mapping
+
+UAT infra lives in the **prod** AWS account, not dev. The
+`.github/workflows/dispatch.yml` branch logic maps:
+
+| Branch | AWS account | `ENV_NAME` |
+|---|---|---|
+| `main` | prod | prod |
+| `uat`  | prod | uat  |
+| `qa`   | dev  | qa   |
+| `dev`  | dev  | dev  |
+
+This matches the pattern in `zerobias-org/app`. If a deploy fails with
+`Not authorized to perform sts:AssumeRoleWithWebIdentity` and the role
+ARN looks correct, the next thing to check is whether the account ID
+passed into `role-to-assume` matches the account the role actually
+lives in (prod for `uat`, dev for `qa`/`dev`).
