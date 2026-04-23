@@ -77,18 +77,15 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":gear: new ${{ github.repository }} artifacts published :tada:",
+                    "text": ":rocket: ${{ env.APP_NAME }} deployed to ${{ env.ENV_NAME }}",
                     "emoji": true
                   }
-                },
-                {
-                  "type": "divider"
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ env.APP_NAME }}"
+                    "text": "*Repo:* `${{ github.repository }}`\n*Bucket:* `${{ env.S3_BUCKET }}`\n*Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|`${{ github.sha }}`>\n*Run:* <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View workflow>"
                   }
                 }
               ]
