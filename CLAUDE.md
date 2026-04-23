@@ -33,7 +33,7 @@ login/
 
 ### Dana Login SDK
 
-The **Dana Login SDK** (`@auditmation/dana-login-sdk`) provides:
+The **Dana Login SDK** (`@com/dana-login-sdk`) provides:
 - Base Handlebars templates for login flow
 - Express.js server for local development
 - Metalsmith static site generator
@@ -104,8 +104,8 @@ npm start
 **4. Customize templates:**
 ```bash
 # Copy templates from SDK to override
-cp node_modules/@auditmation/dana-login-sdk/views/login.hbs src/views/
-cp node_modules/@auditmation/dana-login-sdk/partials/head.hbs src/partials/
+cp node_modules/@com/dana-login-sdk/views/login.hbs src/views/
+cp node_modules/@com/dana-login-sdk/partials/head.hbs src/partials/
 
 # Edit templates with your branding
 # Add custom CSS to src/assets/custom.css
@@ -397,7 +397,7 @@ npm run lerna:test
 
 ### SDK Version
 
-Login packages depend on `@auditmation/dana-login-sdk`:
+Login packages depend on `@com/dana-login-sdk`:
 - Check SDK version in package.json
 - Update SDK for new features or security patches
 - Review SDK changelog before upgrading
@@ -443,8 +443,8 @@ mkdir -p src/assets
 # Add logo.png, custom.css
 
 # 5. Override templates
-cp node_modules/@auditmation/dana-login-sdk/views/login.hbs src/views/
-cp node_modules/@auditmation/dana-login-sdk/partials/head.hbs src/partials/
+cp node_modules/@com/dana-login-sdk/views/login.hbs src/views/
+cp node_modules/@com/dana-login-sdk/partials/head.hbs src/partials/
 
 # 6. Customize
 # Edit src/views/login.hbs - add logo, change text
@@ -511,8 +511,8 @@ aws cloudfront create-invalidation --distribution-id XXX --paths "/acme-corp/*"
 ## Related Documentation
 
 - **[Root CLAUDE.md](../../CLAUDE.md)** - Meta-repo guidance
-- **[auditmation/dana/CLAUDE.md](../../auditmation/dana/CLAUDE.md)** - Authentication service
-- **[auditmation/devops/CLAUDE.md](../../auditmation/devops/CLAUDE.md)** - Deployment workflows
+- **[com/dana/CLAUDE.md](../../com/dana/CLAUDE.md)** - Authentication service
+- **[com/devops/CLAUDE.md](../../com/devops/CLAUDE.md)** - Deployment workflows
 - **[package/miraxr/README.md](package/miraxr/README.md)** - Example login package
 - **[README.md](README.md)** - Repository overview
 - **Dana Login SDK** - NPM package documentation
