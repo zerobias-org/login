@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 200" width="650" height="200">
+  <defs>
+    <!-- Shield gradient -->
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1B3A5C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2A5F8F;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#E8913A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F4A942;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2A5F8F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3D7AB5;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- "SME" letter gradient -->
+    <linearGradient id="smeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3F73AE"/>
+      <stop offset="55%" stop-color="#6FA7CF"/>
+      <stop offset="100%" stop-color="#A8DDE8"/>
+    </linearGradient>
+
+    <!-- "Mart" letter gradient -->
+    <linearGradient id="martGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C47424"/>
+      <stop offset="55%" stop-color="#DFAA4A"/>
+      <stop offset="100%" stop-color="#F2D680"/>
+    </linearGradient>
+
+    <!-- Soft light glow behind the shield-center checkmark -->
+    <filter id="checkGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="0.9" in="SourceAlpha" result="blur"/>
+      <feFlood flood-color="#FFF8D0" flood-opacity="0.9" result="col"/>
+      <feComposite in="col" in2="blur" operator="in" result="halo"/>
+      <feMerge>
+        <feMergeNode in="halo"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Shield Icon -->
+  <g transform="translate(30, 16)">
+    <path d="M70 10 L120 30 L120 90 C120 130 70 160 70 160 C70 160 20 130 20 90 L20 30 Z"
+          fill="url(#shieldGrad)" stroke="none"/>
+    <path d="M70 22 L110 38 L110 88 C110 120 70 146 70 146 C70 146 30 120 30 88 L30 38 Z"
+          fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+
+    <!-- COMPLETE-GRAPH web (K6): every node connected to every other node. -->
+    <line x1="70" y1="75" x2="50" y2="52" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+    <line x1="70" y1="75" x2="90" y2="52" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+    <line x1="70" y1="75" x2="45" y2="95" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+    <line x1="70" y1="75" x2="95" y2="95" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+    <line x1="70" y1="75" x2="70" y2="112" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+    <line x1="50" y1="52" x2="90" y2="52" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="50" y1="52" x2="45" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="50" y1="52" x2="95" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="50" y1="52" x2="70" y2="112" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="90" y1="52" x2="45" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="90" y1="52" x2="95" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="90" y1="52" x2="70" y2="112" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="45" y1="95" x2="95" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="45" y1="95" x2="70" y2="112" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <line x1="95" y1="95" x2="70" y2="112" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+
+    <!-- Nodes: white central (for checkmark contrast), orange peers. -->
+    <circle cx="70" cy="75" r="11" fill="#FFFFFF"/>
+    <circle cx="50" cy="52" r="5.5" fill="#E8913A" opacity="0.95"/>
+    <circle cx="90" cy="52" r="5.5" fill="#E8913A" opacity="0.95"/>
+    <circle cx="45" cy="95" r="5.5" fill="#E8913A" opacity="0.95"/>
+    <circle cx="95" cy="95" r="5.5" fill="#E8913A" opacity="0.95"/>
+    <circle cx="70" cy="112" r="5.5" fill="#E8913A" opacity="0.95"/>
+
+    <!-- Checkmark on central node -->
+    <path d="M65.5 75.5 L 69 80 L 75 70"
+          stroke="#3F8E30" stroke-width="3" fill="none"
+          stroke-linecap="square" stroke-linejoin="miter"
+          filter="url(#checkGlow)"/>
+  </g>
+
+  <!-- "SME" as paths (Archivo Black glyphs, no font import required) -->
+  <g transform="translate(170,110) scale(0.085846,-0.072)" fill="url(#smeGrad)">
+    <path d="M667 488V476H460V480Q460 510 438.0 530.0Q416 550 371 550Q327 550 303.5 537.0Q280 524 280 505Q280 478 312.0 465.0Q344 452 415 438Q498 421 551.5 402.5Q605 384 645.0 342.0Q685 300 686 228Q686 106 603.5 47.0Q521 -12 383 -12Q222 -12 132.5 42.0Q43 96 43 233H252Q252 181 279.0 163.5Q306 146 363 146Q405 146 432.5 155.0Q460 164 460 192Q460 217 429.5 229.5Q399 242 330 256Q246 274 191.0 293.5Q136 313 95.0 358.0Q54 403 54 480Q54 593 141.5 646.5Q229 700 363 700Q495 700 580.0 646.5Q665 593 667 488Z" transform="translate(0,0)"/>
+    <path d="M665 0V248Q665 294 668.5 342.5Q672 391 676.0 424.0Q680 457 681 466H677L550 0H377L249 465H245Q246 456 250.5 423.5Q255 391 259.0 342.5Q263 294 263 248V0H60V688H372L476 291H480L583 688H884V0Z" transform="translate(722,0)"/>
+    <path d="M74 688H669V523H295V428H615V270H295V165H676V0H74Z" transform="translate(1666,0)"/>
+  </g>
+
+  <!-- "Mart" as paths (Archivo Black glyphs) -->
+  <g transform="translate(395,110) scale(0.082033,-0.072)" fill="url(#martGrad)">
+    <path d="M665 0V248Q665 294 668.5 342.5Q672 391 676.0 424.0Q680 457 681 466H677L550 0H377L249 465H245Q246 456 250.5 423.5Q255 391 259.0 342.5Q263 294 263 248V0H60V688H372L476 291H480L583 688H884V0Z" transform="translate(0,0)"/>
+    <path d="M594 368V162Q594 145 602.0 134.0Q610 123 626 123H662V8Q659 6 646.5 1.5Q634 -3 611.0 -7.5Q588 -12 558 -12Q500 -12 462.5 5.5Q425 23 411 54Q373 24 326.0 6.0Q279 -12 216 -12Q30 -12 30 136Q30 213 71.5 253.5Q113 294 191.0 309.0Q269 324 395 324V350Q395 381 373.5 397.0Q352 413 318 413Q287 413 264.5 402.0Q242 391 242 367V363H46Q45 368 45 377Q45 452 116.5 496.0Q188 540 321 540Q442 540 518.0 499.5Q594 459 594 368ZM229 162Q229 112 297 112Q336 112 365.5 133.0Q395 154 395 185V230Q310 230 269.5 211.5Q229 193 229 162Z" transform="translate(944,0)"/>
+    <path d="M440 529V362H376Q314 362 286.5 330.0Q259 298 259 235V0H60V528H223L236 448Q254 494 293.0 517.5Q332 541 381 541Q404 541 422.0 535.5Q440 530 440 529Z" transform="translate(1611,0)"/>
+    <path d="M412 528V393H300V192Q300 156 312.0 139.5Q324 123 356 123H412V6Q388 -2 350.0 -7.0Q312 -12 284 -12Q196 -12 148.5 20.0Q101 52 101 129V393H27V528H109L152 688H300V528Z" transform="translate(2055,0)"/>
+  </g>
+
+  <!-- Accent underline -->
+  <rect x="170" y="120" width="430" height="4" rx="2" fill="url(#accentGrad)"/>
+
+  <!-- Tagline -->
+  <text x="170" y="148" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="500" font-size="16" fill="#6B7C8E" textLength="430" lengthAdjust="spacing">COMPLIANCE EXPERTS MARKETPLACE</text>
+</svg>
