@@ -1,0 +1,9 @@
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (!params.has('nextPath')) {
+    params.set('nextPath', '/sme-mart');
+    window.history.replaceState({}, '', window.location.pathname + '?' + params.toString());
+  }
+})();
+</script>
