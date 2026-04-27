@@ -7,18 +7,6 @@ on:
         description: 'Name of the application to deploy'
         required: true
         type: string
-      env-name:
-        description: 'Environment name (e.g., prod, dev, qa)'
-        required: true
-        type: string
-      aws-account-id:
-        description: 'AWS account ID for the deployment'
-        required: true
-        type: string
-      s3-bucket:
-        description: 'S3 bucket where the app will be deployed'
-        required: true
-        type: string
 
 permissions:
   id-token: write
@@ -31,28 +19,58 @@ jobs:
     env:
       AWS_REGION: us-east-1
       APP_NAME: ${{ github.event.inputs.app-name }}
-      ENV_NAME: ${{ github.event.inputs.env-name }}
-      AWS_ACCOUNT_ID: ${{ github.event.inputs.aws-account-id }}
-      S3_BUCKET: ${{ github.event.inputs.s3-bucket }}
-      ZB_TOKEN : ${{ secrets.ZB_TOKEN }}
+      ZB_TOKEN: ${{ secrets.ZB_TOKEN }}
 
     steps:
-      - name: Debug input values
+      - name: Resolve environment from branch
+        shell: bash
         run: |
-          echo "📦 App: $APP_NAME"
-          echo "🌍 Env: $ENV_NAME"
-          echo "🏦 Account: $AWS_ACCOUNT_ID"
-          echo "🪣 Bucket: $S3_BUCKET"
+          BRANCH="${{ github.ref_name }}"
+          case "$BRANCH" in
+            main) ENV_NAME="prod" ;;
+            uat)  ENV_NAME="demo" ;;
+            qa)   ENV_NAME="qa" ;;
+            dev)  ENV_NAME="dev" ;;
+            *)
+              echo "::error::Unsupported branch '$BRANCH'. Supported branches: main, uat, qa, dev"
+              exit 1
+              ;;
+          esac
+          echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
 
-      - name: import secrets
+      - name: Validate inputs
+        shell: bash
+        run: |
+          if [[ -z "${{ github.event.inputs.app-name }}" ]]; then
+            echo "::error::app-name is required and cannot be empty"
+            exit 1
+          fi
+
+          if [[ ! "${{ github.event.inputs.app-name }}" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+            echo "::error::app-name contains invalid characters. Only alphanumeric, hyphens, and underscores are allowed."
+            exit 1
+          fi
+
+      - name: Import secrets from Vault
         uses: hashicorp/vault-action@v2.4.3
         with:
           method: jwt
           url: ${{ secrets.VAULT_ADDR }}
-          role: publishing-role
+          role: zb-org-login-publish
           path: gh-actions
           secrets: |
+            operations-kv/data/github/zb-org/login/${{ env.ENV_NAME }} bucketName | S3_BUCKET ;
+            operations-kv/data/github/zb-org/login/${{ env.ENV_NAME }} accountId | AWS_ACCOUNT_ID ;
+            operations-kv/data/github/zb-org/login/${{ env.ENV_NAME }} distributionId | CF_DISTRIBUTION_ID ;
             operations-kv/data/ci/slack releasesWebhook | SLACK_RELEASES_WEBHOOK ;
+
+      - name: Debug values
+        run: |
+          echo "App: $APP_NAME"
+          echo "Env: $ENV_NAME"
+          echo "Account: $AWS_ACCOUNT_ID"
+          echo "Bucket: $S3_BUCKET"
+          echo "CF Distribution: $CF_DISTRIBUTION_ID"
 
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -64,7 +82,22 @@ jobs:
           app-base-path: package
           s3-bucket: ${{ env.S3_BUCKET }}
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-zb-org-login-${{ github.event.inputs.env-name }}-custom-ui
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-zb-org-login-${{ env.ENV_NAME }}-custom-ui-s3-rw
+
+      - name: Invalidate CloudFront cache
+        shell: bash
+        run: |
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$CF_DISTRIBUTION_ID" \
+            --paths "/${{ env.APP_NAME }}/*" \
+            --query 'Invalidation.Id' \
+            --output text)
+
+          echo "Waiting for invalidation $INVALIDATION_ID to complete..."
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$CF_DISTRIBUTION_ID" \
+            --id "$INVALIDATION_ID"
+          echo "CloudFront invalidation completed."
 
       - name: Release Announcement
         id: slack
