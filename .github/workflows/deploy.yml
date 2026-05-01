@@ -74,6 +74,20 @@ jobs:
 
       - name: Checkout source code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect packages touched in HEAD
+        shell: bash
+        run: |
+          TOUCHED=$(git diff-tree --no-commit-id --name-only -r HEAD \
+            | awk -F/ '/^package\// && NF>1 {print $2}' \
+            | sort -u | paste -sd ', ' -)
+          if [ -z "$TOUCHED" ]; then
+            TOUCHED="(none in HEAD commit)"
+          fi
+          echo "PACKAGES_TOUCHED=$TOUCHED" >> $GITHUB_ENV
+          echo "Detected packages touched: $TOUCHED"
 
       - name: Deploy app
         uses: zerobias-org/devops/actions/static-s3-app-release@main
@@ -116,10 +130,33 @@ jobs:
                 },
                 {
                   "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Repo:* `${{ github.repository }}`\n*Bucket:* `${{ env.S3_BUCKET }}`\n*Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|`${{ github.sha }}`>\n*Run:* <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View workflow>"
-                  }
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch*\n`${{ github.ref_name }}`"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Triggered by*\n${{ github.actor }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Packages in HEAD*\n`${{ env.PACKAGES_TOUCHED }}`"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|view diff>"
+                    }
+                  ]
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": ":package: bucket `${{ env.S3_BUCKET }}` | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|workflow run #${{ github.run_number }}>"
+                    }
+                  ]
                 }
               ]
             }
