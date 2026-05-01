@@ -148,15 +148,6 @@ jobs:
                       "text": "*Commit*\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|view diff>"
                     }
                   ]
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": ":package: bucket `${{ env.S3_BUCKET }}` | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|workflow run #${{ github.run_number }}>"
-                    }
-                  ]
                 }
               ]
             }
