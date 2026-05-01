@@ -12,6 +12,8 @@
     "lerna:publish": "lerna publish --conventional-commits --no-verify-access",
     "lerna:test": "lerna run test",
     "lerna:version": "lerna version --no-git-tag-version --no-push --conventional-commits --yes",
+    "release": "lerna version --conventional-commits --conventional-graduate --yes --no-private --message 'chore(release): %s [skip ci]' --no-push",
+    "release:rc": "lerna version --conventional-commits --conventional-prerelease --preid rc --yes --no-private --message 'chore(release): %s [skip ci]' --no-push",
     "nx:publish": "lerna run nx:publish --since && ./scripts/commit.sh",
     "nx:prepublish": "echo \"No prepublish script\"",
     "postinstall": "husky install"

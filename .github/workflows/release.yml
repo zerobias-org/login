@@ -1,0 +1,189 @@
+name: Release and Deploy
+
+on:
+  push:
+    branches: [main, uat, qa]   # NO dev — zerobias-org/login does not deploy/publish to dev
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+  actions: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    outputs:
+      bumped: ${{ steps.release.outputs.bumped }}
+      changed_apps: ${{ steps.detect.outputs.changed_apps }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: import secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          method: jwt
+          url: ${{ secrets.VAULT_ADDR }}
+          role: publishing-role
+          path: gh-actions
+          secrets: |
+            operations-kv/data/ci/github readPackagesToken | NPM_TOKEN ;
+            operations-kv/data/ci/github readPackagesToken | READ_TOKEN ;
+
+      - name: Install dependencies
+        env:
+          NPM_TOKEN: ${{ env.NPM_TOKEN }}
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "Marvin the Paranoid Android"
+          git config user.email "ci@zerobias.com"
+
+      - name: Release (final on main, rc on uat/qa)
+        id: release
+        run: |
+          BEFORE_SHA=$(git rev-parse HEAD)
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            npm run release
+          else
+            npm run release:rc
+          fi
+          AFTER_SHA=$(git rev-parse HEAD)
+          if [ "$BEFORE_SHA" = "$AFTER_SHA" ]; then
+            echo "No version change."
+            echo "bumped=false" >> $GITHUB_OUTPUT
+          else
+            echo "bumped=true" >> $GITHUB_OUTPUT
+            git push --follow-tags origin "${{ github.ref_name }}"
+          fi
+
+      - name: Detect changed apps for deploy
+        id: detect
+        run: |
+          # If publish bumped, the bump commit touched the changed package.json files.
+          # Diff HEAD against its parent to identify package/<name>/ directories.
+          # If no bump, fall back to diffing original push range (last commit on the branch).
+          CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD \
+            | awk -F/ '/^package\// && NF>=2 {print "package/"$2}' \
+            | sort -u)
+          if [ -z "$CHANGED" ]; then
+            echo "No package directories changed."
+            echo "changed_apps=[]" >> $GITHUB_OUTPUT
+          else
+            JSON=$(echo "$CHANGED" | jq -R . | jq -sc .)
+            echo "Changed apps: $JSON"
+            echo "changed_apps=$JSON" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    needs: publish
+    if: needs.publish.outputs.changed_apps != '[]' && needs.publish.outputs.changed_apps != ''
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app_path: ${{ fromJson(needs.publish.outputs.changed_apps) }}
+      fail-fast: false
+    env:
+      AWS_REGION: us-east-1
+    steps:
+      - name: Resolve environment + app
+        shell: bash
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          echo "BRANCH_NAME=$BRANCH" >> $GITHUB_ENV
+          case "$BRANCH" in
+            main) ENV_NAME="prod" ;;
+            uat)  ENV_NAME="demo" ;;
+            qa)   ENV_NAME="qa" ;;
+            *)
+              echo "::error::Unsupported branch '$BRANCH'"
+              exit 1
+              ;;
+          esac
+          echo "ENV_NAME=$ENV_NAME" >> $GITHUB_ENV
+          APP_NAME=$(basename "${{ matrix.app_path }}")
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+
+      - name: import secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          method: jwt
+          url: ${{ secrets.VAULT_ADDR }}
+          role: zb-org-login-publish
+          path: gh-actions
+          secrets: |
+            operations-kv/data/github/zb-org/login/${{ env.ENV_NAME }} bucketName | S3_BUCKET ;
+            operations-kv/data/github/zb-org/login/${{ env.ENV_NAME }} accountId | AWS_ACCOUNT_ID ;
+            operations-kv/data/github/zb-org/login/${{ env.ENV_NAME }} distributionId | CF_DISTRIBUTION_ID ;
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Deploy app
+        uses: zerobias-org/devops/actions/static-s3-app-release@main
+        with:
+          app-name: ${{ env.APP_NAME }}
+          app-base-path: package
+          s3-bucket: ${{ env.S3_BUCKET }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-zb-org-login-${{ env.ENV_NAME }}-custom-ui
+
+      - name: Invalidate CloudFront cache
+        shell: bash
+        run: |
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$CF_DISTRIBUTION_ID" \
+            --paths "/${{ env.APP_NAME }}/*" \
+            --query 'Invalidation.Id' \
+            --output text)
+          echo "Waiting for invalidation $INVALIDATION_ID to complete..."
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$CF_DISTRIBUTION_ID" \
+            --id "$INVALIDATION_ID"
+          echo "CloudFront invalidation completed."
+
+  notify:
+    needs: [publish, deploy]
+    if: always() && needs.publish.outputs.bumped == 'true'
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: import secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          method: jwt
+          url: ${{ secrets.VAULT_ADDR }}
+          role: publishing-role
+          path: gh-actions
+          secrets: |
+            operations-kv/data/ci/github readPackagesToken | NPM_TOKEN ;
+            operations-kv/data/ci/github readPackagesToken | READ_TOKEN ;
+            operations-kv/data/ci/slack releasesWebhook | SLACK_RELEASES_WEBHOOK ;
+
+      - name: Release Announcement
+        uses: zerobias-org/devops/actions/release-announcement@main
+        with:
+          since: HEAD~1
+          publish-release-event: 'false'
