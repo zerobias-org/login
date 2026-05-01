@@ -124,7 +124,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":rocket: ${{ env.APP_NAME }} deployed to ${{ env.ENV_NAME }}",
+                    "text": ":rocket: Custom UI Login: ${{ env.APP_NAME }} deployed to ${{ env.ENV_NAME }}",
                     "emoji": true
                   }
                 },
