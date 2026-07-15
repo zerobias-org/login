@@ -97,21 +97,7 @@ jobs:
           s3-bucket: ${{ env.S3_BUCKET }}
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/gh-zb-org-login-${{ env.ENV_NAME }}-custom-ui
-
-      - name: Invalidate CloudFront cache
-        shell: bash
-        run: |
-          INVALIDATION_ID=$(aws cloudfront create-invalidation \
-            --distribution-id "$CF_DISTRIBUTION_ID" \
-            --paths "/${{ env.APP_NAME }}/*" \
-            --query 'Invalidation.Id' \
-            --output text)
-
-          echo "Waiting for invalidation $INVALIDATION_ID to complete..."
-          aws cloudfront wait invalidation-completed \
-            --distribution-id "$CF_DISTRIBUTION_ID" \
-            --id "$INVALIDATION_ID"
-          echo "CloudFront invalidation completed."
+          cloudfront-distribution-id: ${{ env.CF_DISTRIBUTION_ID }}
 
       - name: Release Announcement
         id: slack
