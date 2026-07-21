@@ -1,0 +1,29 @@
+<section class="logo-container">
+    <span class="ac-mark"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 3l11 5v7c0 7-4.7 11-11 14C9.7 26 5 22 5 15V8l11-5z" stroke="url(#acg)" stroke-width="1.1"/><path d="M11 16l3.4 3.4L22 12" stroke="url(#acg)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="acg" x1="5" y1="3" x2="27" y2="29"><stop stop-color="#22E0FF"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs></svg></span>
+    <span class="ac-wordmark">AuditCrowd</span>
+</section>
+<section class="input-container" id="login-partial">
+    <section class="text-container">
+        <p>
+            {{{__ "login.welcome_message"}}}
+        </p>
+    </section>
+
+    <label> {{{__ "login.login_form.email_label"}}}</label>
+    <i class="fa fa-envelope"></i>
+    <input type="email" class="email-input" placeholder="{{{__ "login.login_form.email_placeholder"}}}" id="email" autocomplete="off" autofocus/>
+
+</section>
+<section style="display:none;" id="provider-switcher-container" class="provider-switcher-container clearfix"></section>
+<section class="buttons-container">
+    <button class="primary disabled" id="login-btn">
+        {{{__ "login.login_form.next_btn"}}}
+    </button>
+    <button class="primary" id="back-btn-loginScreen" style="display: none;">
+        {{{__ "login.login_form.back_btn"}}}
+    </button>
+    <p class="err-container"></p>
+</section>
+<section class="link-container">
+    <a href="javascript: void(0)" id="shared-session-login-link">{{{__ "login.login_form.shared_session_login_label"}}}</a>
+</section>
