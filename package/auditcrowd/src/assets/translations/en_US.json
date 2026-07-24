@@ -1,0 +1,56 @@
+{
+  "org": { "name": "AuditCrowd" },
+  "err": {
+    "unknown": "Something went wrong. Please try again or contact us at support@auditcrowd.com"
+  },
+  "footer": {
+    "privacy_policy": "Privacy Policy",
+    "privacy_policy_url": "https://auditcrowd.com/privacy",
+    "terms_of_use": "Terms of Use",
+    "terms_of_use_url": "https://auditcrowd.com/terms",
+    "help": "Help",
+    "help_url": "https://auditcrowd.com/help",
+    "copyright": "Copyright &copy; 2026",
+    "company": "AuditCrowd",
+    "company_url": "https://auditcrowd.com",
+    "powered_by_logo": "/assets/visuals/powered-by-zb.png",
+    "powered_by_alt": "Powered by ZeroBias"
+  },
+  "login": {
+    "selectProvider": "Choose your identity provider for ",
+    "welcome_message": "Sign in to AuditCrowd",
+    "login_form": {
+      "email_label": "Email",
+      "email_placeholder": "you@yourcompany.com",
+      "next_btn": "Continue",
+      "back_btn": "Back",
+      "shared_session_login_label": "Sign in with a session key",
+      "navigate_to_login_label": "Sign in with SSO"
+    }
+  },
+  "shared_session": {
+    "welcome_message": "Enter a valid session key to access AuditCrowd",
+    "shared_session_form": {
+      "key_label": "Session Key",
+      "key_placeholder": "",
+      "next_btn": "Continue",
+      "back_btn": "Back"
+    }
+  },
+  "access_denied": {
+    "subtitle": "Access Denied",
+    "content": "We couldn't process your request. Please contact support@auditcrowd.com"
+  },
+  "request_access": {
+    "subtitle": "Unknown User",
+    "content": "There's no account registered for {{email}}. Request access to AuditCrowd below.",
+    "primary_cta": "Request Access",
+    "secondary_cta": "Back"
+  },
+  "session_expired": {
+    "subtitle": "Session Expired",
+    "content": "Your session has expired. Please sign in again.",
+    "primary_cta": "Sign In"
+  },
+  "eula": { "accept": "Accept" }
+}
