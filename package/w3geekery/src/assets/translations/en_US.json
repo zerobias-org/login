@@ -15,7 +15,7 @@
     "copyright": "Copyright &copy; 2026",
     "company": "w3geekery / ZeroBias",
     "company_url": "https://zerobias.com",
-    "powered_by_logo": "/assets/visuals/powered-by-zb.png",
+    "powered_by_logo": "https://cdn.zerobias.com/static/images/zerobias/powered-by-zb.svg",
     "powered_by_alt": "Powered by ZeroBias"
   },
   "login": {
