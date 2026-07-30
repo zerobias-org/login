@@ -1,0 +1,16 @@
+{{!--
+  This partial is required by the SDK -- __scripts.hbs does {{> scripts}}, and Handlebars throws
+  if the partial is missing. It may be empty, but the file must exist.
+
+  Put any page-level JavaScript here. Example: default the post-login destination.
+
+  <script>
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    if (!params.has('nextPath')) {
+      params.set('nextPath', '/your-app');
+      window.history.replaceState({}, '', window.location.pathname + '?' + params.toString());
+    }
+  })();
+  </script>
+--}}
