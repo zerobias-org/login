@@ -28,6 +28,11 @@ jobs:
           dir_names_max_depth: 2
           files: |
             package/**
+          # login-starter is a copy-me template, not a deployable app. It has no
+          # environment, bucket, or DNS entry — dispatching a deploy for it would
+          # fail on the missing Vault config.
+          files_ignore: |
+            package/login-starter/**
 
       - name: Get App Names
         id: normalize

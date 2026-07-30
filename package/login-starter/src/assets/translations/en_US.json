@@ -1,0 +1,60 @@
+{
+  "org": {
+    "name": "Your Company"
+  },
+  "err": {
+    "unknown": "We've encountered an error. Please try again or contact support at support@yourcompany.com"
+  },
+  "footer": {
+    "privacy_policy": "Privacy Policy",
+    "privacy_policy_url": "https://yourcompany.com/privacy",
+    "terms_of_use": "Terms of Use",
+    "terms_of_use_url": "https://yourcompany.com/terms",
+    "help": "Help",
+    "help_url": "https://yourcompany.com/help",
+    "copyright": "Copyright &copy; 2026",
+    "company": "Your Company",
+    "company_url": "https://yourcompany.com",
+    "powered_by_logo": "https://cdn.zerobias.com/static/images/zerobias/powered-by-zb.svg",
+    "powered_by_alt": "Powered by ZeroBias"
+  },
+  "login": {
+    "selectProvider": "Please select the Identity Provider for ",
+    "welcome_message": "Sign in to Your Company",
+    "login_form": {
+      "email_label": "Email",
+      "email_placeholder": "you@yourcompany.com",
+      "next_btn": "Continue",
+      "back_btn": "Back",
+      "shared_session_login_label": "Sign in with Session Key",
+      "navigate_to_login_label": "Sign in with SSO"
+    }
+  },
+  "shared_session": {
+    "welcome_message": "Enter your Shared Session Key to continue",
+    "shared_session_form": {
+      "key_label": "Session Key",
+      "key_placeholder": "Enter session key",
+      "next_btn": "Continue",
+      "back_btn": "Back"
+    }
+  },
+  "access_denied": {
+    "subtitle": "Access Denied",
+    "content": "Unable to process your request. Please contact support at support@yourcompany.com"
+  },
+  "request_access": {
+    "subtitle": "Account Not Found",
+    "content": "There is no account registered for {{email}}. Click below to request access.",
+    "primary_cta": "Request Access",
+    "secondary_cta": "Back"
+  },
+  "session_expired": {
+    "subtitle": "Session Expired",
+    "content": "Your session has expired. Please sign in again.",
+    "primary_cta": "Sign In"
+  },
+  "eula": {
+    "accept": "Accept & Continue"
+  }
+}
