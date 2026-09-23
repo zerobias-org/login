@@ -4,7 +4,7 @@
   "description": "Zerobias white label login artifacts",
   "main": "server.js",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=22.21.1"
   },
   "scripts": {
     "build": "lerna run build",
