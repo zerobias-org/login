@@ -1,0 +1,60 @@
+{
+  "org": {
+    "name": "AuditCrowd"
+  },
+  "err": {
+    "unknown": "Ocurrió un error. Inténtalo de nuevo o escribe a soporte: support@runningbulltech.com"
+  },
+  "footer": {
+    "privacy_policy": "Política de privacidad",
+    "privacy_policy_url": "https://auditcrowd.runningbulltech.com/frontend/privacy",
+    "terms_of_use": "Términos de uso",
+    "terms_of_use_url": "https://auditcrowd.runningbulltech.com/frontend/terms",
+    "help": "Ayuda",
+    "help_url": "https://auditcrowd.runningbulltech.com/frontend",
+    "copyright": "Copyright &copy; 2026",
+    "company": "Running Bull",
+    "company_url": "https://auditcrowd.runningbulltech.com/frontend",
+    "powered_by_logo": "https://cdn.zerobias.com/static/images/zerobias/powered-by-zb.svg",
+    "powered_by_alt": "Con la tecnología de ZeroBias"
+  },
+  "login": {
+    "selectProvider": "Elige el proveedor de identidad para ",
+    "welcome_message": "Inicia sesión en AuditCrowd",
+    "login_form": {
+      "email_label": "Correo electrónico",
+      "email_placeholder": "tu@empresa.com",
+      "next_btn": "Continuar",
+      "back_btn": "Atrás",
+      "shared_session_login_label": "Entrar con clave de sesión",
+      "navigate_to_login_label": "Entrar con SSO"
+    }
+  },
+  "shared_session": {
+    "welcome_message": "Ingresa tu clave de sesión de AuditCrowd para continuar",
+    "shared_session_form": {
+      "key_label": "Clave de sesión",
+      "key_placeholder": "Ingresa la clave de sesión",
+      "next_btn": "Continuar",
+      "back_btn": "Atrás"
+    }
+  },
+  "access_denied": {
+    "subtitle": "Acceso denegado",
+    "content": "No pudimos procesar tu solicitud. Escribe a soporte: support@runningbulltech.com"
+  },
+  "request_access": {
+    "subtitle": "Cuenta no encontrada",
+    "content": "No hay una cuenta de AuditCrowd para {{email}}. ¿Quieres auditar con nosotros? Solicita acceso para empezar tu postulación.",
+    "primary_cta": "Solicitar acceso",
+    "secondary_cta": "Atrás"
+  },
+  "session_expired": {
+    "subtitle": "Sesión expirada",
+    "content": "Tu sesión expiró. Vuelve a iniciar sesión.",
+    "primary_cta": "Iniciar sesión"
+  },
+  "eula": {
+    "accept": "Aceptar y continuar"
+  }
+}

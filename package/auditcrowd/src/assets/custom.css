@@ -1,169 +1,302 @@
-/* AuditCrowd — liquid glass / neon login (Quantum space) */
+/* AuditCrowd — liquid glass / neon login. Same brand system as the AuditCrowd web app
+   (auditcrowd-lab web/app/brand.css): deep-space background, glass card, cyan→violet neon.
+   The views are the login-starter templates unchanged; all branding lives here, in
+   logo.svg and in the translation files. Brand tokens are in :root. */
+
+:root {
+  --brand-primary: #22E0FF;
+  --brand-primary-mid: #5B8CFF;
+  --brand-secondary: #A78BFA;
+  --brand-bg-dark: #05060C;
+  --brand-bg-deep: #080A14;
+  --brand-text-primary: #EAF0FB;
+  --brand-text-secondary: #93A0BC;
+  --brand-text-muted: #5E6A85;
+  --brand-error: #F472B6;
+  --brand-gradient: linear-gradient(90deg, var(--brand-primary) 0%, var(--brand-primary-mid) 52%, var(--brand-secondary) 100%);
+}
+
 html {
   background:
-    radial-gradient(1200px 800px at 18% -12%, rgba(34,224,255,.10), transparent 60%),
-    radial-gradient(1000px 720px at 102% 112%, rgba(167,139,250,.13), transparent 60%),
-    linear-gradient(180deg, #05060C 0%, #080A14 100%);
+    radial-gradient(1200px 800px at 18% -12%, rgba(34, 224, 255, 0.10), transparent 60%),
+    radial-gradient(1000px 720px at 102% 112%, rgba(167, 139, 250, 0.13), transparent 60%),
+    linear-gradient(180deg, var(--brand-bg-dark) 0%, var(--brand-bg-deep) 100%);
   background-attachment: fixed;
   min-height: 100vh;
 }
+
 body {
-  background: transparent;
+  background-color: transparent;
   height: 100vh;
-  color: #EAF0FB;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--brand-text-primary);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-header, footer { display: none; }
 
+header {
+  display: none;
+}
+
+/* Glass card */
 main {
-  background: rgba(255,255,255,.035);
+  background: rgba(255, 255, 255, 0.035);
   -webkit-backdrop-filter: blur(20px) saturate(125%);
   backdrop-filter: blur(20px) saturate(125%);
-  color: #EAF0FB;
-  margin-left: -145px;
-  width: 350px;
-  min-height: 250px;
+  color: var(--brand-text-primary);
+  margin-left: -175px;
+  min-height: 280px;
   height: auto;
-  padding: 10px 22px 24px;
-  border: 1px solid rgba(34,224,255,.20);
+  width: 350px;
+  padding: 28px 24px 26px;
+  border: 1px solid rgba(34, 224, 255, 0.20);
   border-radius: 16px;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 30px 80px -24px rgba(5,6,12,.85),
-    0 0 70px -26px rgba(34,224,255,.30);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 30px 80px -24px rgba(5, 6, 12, 0.85),
+    0 0 70px -26px rgba(34, 224, 255, 0.30);
 }
 
-/* Logo lockup */
+/* Logo lockup: the shield mark (logo.svg) + the wordmark, drawn in CSS so it uses the
+   page's Space Grotesk (an <img> SVG cannot load web fonts). */
 .logo-container {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 11px;
-  height: auto;
-  margin: 14px 0 22px;
-  background: none;
-}
-.logo-container img { display: none; }
-.ac-mark { display: grid; place-items: center; }
-.ac-mark svg { width: 32px; height: 32px; filter: drop-shadow(0 0 10px rgba(34,224,255,.35)); }
-.ac-wordmark {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: .01em;
-  color: #EAF0FB;
+  gap: 10px;
+  margin: 4px 0 22px;
+  text-align: center;
 }
 
-/* Heading text */
-.text-container { color: #93A0BC; text-align: center; margin-bottom: 22px; }
-.text-container h2 { color: #EAF0FB; font-family: 'Space Grotesk', sans-serif; }
-.text-container p {
-  font-family: 'Space Grotesk', sans-serif;
+.logo-container img {
+  height: 34px;
+  width: 34px;
+  filter: drop-shadow(0 0 10px rgba(34, 224, 255, 0.35));
+}
+
+.logo-container::after {
+  content: "AuditCrowd";
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
   font-weight: 500;
-  color: #EAF0FB;
-  font-size: 16px;
+  font-size: 22px;
+  letter-spacing: 0.01em;
+  color: var(--brand-text-primary);
+}
+
+/* Text */
+.text-container {
+  color: var(--brand-text-secondary);
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.text-container h2 {
+  color: var(--brand-text-primary);
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.text-container p {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 500;
+  color: var(--brand-text-primary);
+  font-size: 1.05rem;
   margin: 0;
 }
 
 /* Inputs */
 .input-container label {
-  color: #93A0BC;
+  color: var(--brand-text-secondary);
   font-weight: 500;
-  font-size: 13px;
-  letter-spacing: .01em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 6px;
+  display: block;
 }
-.input-container i { color: #5E6A85; bottom: -8px; font-size: 14px; }
+
+.input-container i {
+  color: var(--brand-text-muted);
+  bottom: -8px;
+  font-size: 14px;
+}
+
 .input-container .shared-session-key-input,
 .input-container .email-input {
   height: 46px;
   font-size: 14px;
-  padding: 13px 5px 16px 32px;
-  background: rgba(255,255,255,.04);
-  color: #EAF0FB;
-  border: 1px solid rgba(255,255,255,.12);
+  padding: 12px 12px 12px 34px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--brand-text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   width: 100%;
   border-radius: 10px;
   font-family: 'Inter', sans-serif;
-  transition: border-color .15s ease, box-shadow .15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.input-container .email-input::placeholder,
-.input-container .shared-session-key-input::placeholder { color: #5E6A85; }
+
 .input-container .email-input:focus,
 .input-container .shared-session-key-input:focus {
   outline: none;
-  border-color: rgba(34,224,255,.55);
-  box-shadow: 0 0 0 3px rgba(34,224,255,.12);
+  border-color: rgba(34, 224, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(34, 224, 255, 0.12);
 }
-.input-container .content {
-  border: solid 1px rgba(255,255,255,.12);
-  background-color: rgba(255,255,255,.04);
-  color: #EAF0FB;
-}
-.markdown code, .markdown tt, .markdown pre { background-color: transparent; }
 
-/* Primary button — neon gradient pill */
+.input-container .email-input::placeholder,
+.input-container .shared-session-key-input::placeholder {
+  color: var(--brand-text-muted);
+}
+
+/* Buttons */
 button.primary {
   border-radius: 9999px;
   width: 100%;
   height: 46px;
-  background: linear-gradient(90deg, #22E0FF 0%, #5B8CFF 52%, #A78BFA 100%);
-  color: #05060C;
+  background: var(--brand-gradient);
+  color: var(--brand-bg-dark);
   border: none;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: .01em;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  box-shadow: 0 10px 34px -10px rgba(34,224,255,.55);
-  transition: transform .12s ease, box-shadow .15s ease, opacity .15s ease;
+  margin-top: 16px;
+  box-shadow: 0 10px 34px -10px rgba(34, 224, 255, 0.55);
+  transition: transform 0.12s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
-button.primary:hover { transform: translateY(-1px); box-shadow: 0 14px 40px -10px rgba(91,140,255,.6); }
-button.primary.disabled, button.primary:disabled {
-  opacity: .45; cursor: default; box-shadow: none; transform: none;
+
+button.primary:hover:not(.disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 40px -10px rgba(91, 140, 255, 0.6);
 }
+
+button.primary.disabled,
+button.primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
 button.secondary {
-  margin-top: 15px;
+  margin-top: 12px;
   width: 100%;
   border-radius: 9999px;
   height: 46px;
-  background: rgba(255,255,255,.05);
-  color: #EAF0FB;
-  border: 1px solid rgba(255,255,255,.16);
-  font-family: 'Space Grotesk', sans-serif;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--brand-text-primary);
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
   font-weight: 500;
   cursor: pointer;
+  transition: background 0.15s ease;
 }
 
-/* Register / request access */
-.register-container {
-  display: flex; flex-direction: row; justify-content: center; align-items: center;
-  gap: 6px; margin-top: 18px;
+button.secondary:hover {
+  background: rgba(255, 255, 255, 0.09);
 }
-.register-container p { color: #93A0BC; font-size: 13px; margin: 0; }
-.register-container a { color: #22E0FF; font-weight: 600; text-decoration: none; font-size: 13px; }
-.register-container a:hover { text-decoration: underline; }
 
 /* Provider switcher */
-.switcher-container, .switcher-dropdown {
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.14);
-  color: #EAF0FB;
-}
-.switcher-container label { color: #EAF0FB; }
-.provider-switcher-container { margin-bottom: 10px; }
-.provider-switcher-tiles .switcher-item {
-  width: 35%;
-  border: 1px solid rgba(34,224,255,.34);
-  margin-right: 6%;
+.switcher-container,
+.switcher-dropdown {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 10px;
-  margin-bottom: 15px;
-  background: rgba(255,255,255,.03);
+  color: var(--brand-text-primary);
 }
-.provider-switcher-tiles .switcher-item label { margin-left: 5px; color: #EAF0FB; }
 
-/* Errors + misc */
-.err-container { color: #F472B6; font-size: 13px; }
-.err-container:empty { display: none; }
-.link-container { display: none; }
-.link-container a { color: #22E0FF; }
+.switcher-container label {
+  color: var(--brand-text-primary);
+}
+
+.provider-switcher-container {
+  margin-bottom: 14px;
+}
+
+.provider-switcher-tiles .switcher-item {
+  width: 45%;
+  border: 1px solid rgba(34, 224, 255, 0.30);
+  margin-right: 5%;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.provider-switcher-tiles .switcher-item:hover {
+  border-color: var(--brand-primary);
+  background: rgba(34, 224, 255, 0.08);
+}
+
+.provider-switcher-tiles .switcher-item label {
+  color: var(--brand-text-primary);
+  margin-left: 8px;
+}
+
+/* Links */
+.link-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.link-container a {
+  color: var(--brand-primary);
+  text-decoration: none;
+  font-size: 0.8125rem;
+}
+
+.link-container a:hover {
+  text-decoration: underline;
+}
+
+/* Errors */
+.err-container {
+  color: var(--brand-error);
+  font-size: 0.8125rem;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.err-container:empty {
+  display: none;
+}
+
+/* EULA content */
+.input-container .content {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--brand-text-primary);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.markdown code,
+.markdown tt,
+.markdown pre {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* Footer — kept visible: it carries the "Powered by ZeroBias" lockup and the legal links */
+footer {
+  background-color: rgba(5, 6, 12, 0.72);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(34, 224, 255, 0.12);
+  color: var(--brand-text-muted);
+  font-size: 0.75rem;
+}
+
+footer .footer-content .footer-links a {
+  color: var(--brand-text-secondary);
+  text-decoration: none;
+}
+
+footer .footer-content .footer-links a:hover {
+  color: var(--brand-primary);
+}
+
+footer .footer-content .footer-links .border-right {
+  border-right-color: rgba(147, 160, 188, 0.35);
+}

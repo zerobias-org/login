@@ -2,11 +2,11 @@
   "name": "@zerobias-org/login-auditcrowd",
   "version": "1.0.0",
   "type": "module",
-  "author": "joe@runningbulltech.com",
+  "author": "luis.sejas.mendez@gmail.com",
   "license": "ISC",
-  "description": "Login package for AuditCrowd by Running Bull",
+  "description": "Custom ZeroBias login page for AuditCrowd by Running Bull (re-cut from login-starter)",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=22.21.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,11 +15,7 @@
     "dev": "npm run build:local && node server.js",
     "dev:qa": "PROXY_TARGET=https://api.qa.zerobias.com npm run dev",
     "dev:prod": "PROXY_TARGET=https://api.app.zerobias.com npm run dev",
-    "dev:ci": "PROXY_TARGET=https://api.ci.zerobias.com npm run dev",
     "start": "npm run build:local && npx http-server dist -p 8080"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   },
   "repository": {
     "type": "git",
@@ -27,7 +23,7 @@
     "directory": "package/auditcrowd/"
   },
   "dependencies": {
-    "@zerobias-com/dana-login-sdk": "^1.0.65"
+    "@zerobias-com/dana-login-sdk": "^1.0.80"
   },
   "devDependencies": {
     "express": "^5.1.0",
