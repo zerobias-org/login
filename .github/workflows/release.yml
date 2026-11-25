@@ -75,6 +75,7 @@ jobs:
           # If no bump, fall back to diffing original push range (last commit on the branch).
           CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD \
             | awk -F/ '/^package\// && NF>=2 {print "package/"$2}' \
+            | grep -v '^package/login-starter$' \
             | sort -u)
           if [ -z "$CHANGED" ]; then
             echo "No package directories changed."

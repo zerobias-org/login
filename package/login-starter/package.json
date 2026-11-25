@@ -1,0 +1,33 @@
+{
+  "name": "@zerobias-org/login-starter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "author": "team@zerobias.com",
+  "license": "ISC",
+  "description": "Starter template for a custom ZeroBias login page. Copy this folder to package/<yourcompany> and customize.",
+  "engines": {
+    "node": ">=22.21.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node ./node_modules/@zerobias-com/dana-login-sdk/metalsmith.js",
+    "build:local": "node ./node_modules/@zerobias-com/dana-login-sdk/metalsmith.js --local",
+    "dev": "npm run build:local && node server.js",
+    "dev:qa": "PROXY_TARGET=https://api.qa.zerobias.com npm run dev",
+    "dev:prod": "PROXY_TARGET=https://api.app.zerobias.com npm run dev",
+    "start": "npm run build:local && npx http-server dist -p 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zerobias-org/login.git",
+    "directory": "package/login-starter/"
+  },
+  "dependencies": {
+    "@zerobias-com/dana-login-sdk": "^1.0.80"
+  },
+  "devDependencies": {
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5"
+  }
+}

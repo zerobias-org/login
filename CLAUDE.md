@@ -16,49 +16,57 @@ This repository allows organizations to customize the login experience with thei
 
 ```
 login/
-├── package/                    # Custom login packages
-│   └── miraxr/                # Example: Mira XR custom login
+├── package/                    # Custom login packages, one per company
+│   ├── login-starter/         # copy-me template (private — never published or deployed)
+│   ├── miraxr/                # company package
+│   └── workworlds/            # company package
 │       ├── src/
-│       │   ├── assets/        # Custom CSS, images, fonts
-│       │   ├── partials/      # Handlebars partial overrides
-│       │   └── views/         # Handlebars view overrides
-│       ├── package.json
-│       └── README.md
+│       │   ├── assets/        # custom CSS, images, translations, metadata
+│       │   ├── partials/      # head.hbs + scripts.hbs (both required)
+│       │   └── views/         # all six page templates (required)
+│       ├── .npmrc             # registry auth — required for npm install
+│       ├── server.js          # local dev proxy server
+│       └── package.json
 ├── .github/                    # GitHub Actions workflows
 ├── lerna.json                  # Monorepo configuration
-└── README.md                   # Repository overview
+├── AGENTS.md                   # instructions for AI assistants
+└── README.md                   # repository overview
 ```
 
 ## Core Concepts
 
 ### Dana Login SDK
 
-The **Dana Login SDK** (`@auditmation/dana-login-sdk`) provides:
-- Base Handlebars templates for login flow
-- Express.js server for local development
-- Metalsmith static site generator
-- Default styles and assets
-- Authentication integration with Dana service
+The **Dana Login SDK** (`@zerobias-com/dana-login-sdk`, published to `pkg.zerobias.org`) provides:
+- The page layout and framing partials (`__head`, `__header`, `__footer`, `__scripts`)
+- Metalsmith static site generator (`metalsmith.js`)
+- Default styles and flag assets
+- ZeroBias brand chrome served from `cdn.zerobias.com`
+- A package scaffold, `npx dana-login-init`
+- Authentication integration with the Dana service
 
-**Login Flow Pages:**
-- Login page (username/password)
-- Multi-factor authentication (MFA)
-- Password reset request
-- Password reset confirmation
-- Email verification
-- Error pages
+**Pages** (all six supplied by the consumer package — the SDK ships no `views` directory):
+`login`, `access_denied`, `eula`, `request_access`, `session_expired`, `shared_session`
 
 ### Template Override System
 
-Custom login packages override templates by:
-1. Copying templates from SDK to local `views/` or `partials/`
-2. Modifying templates with custom branding
-3. Adding custom CSS in `assets/`
-4. Building static site with Metalsmith
+The SDK owns the page shell; a package fills it in. Package templates are **composed into** the
+SDK's layout, not swapped for it.
 
-**Template Hierarchy:**
-1. Local `views/` and `partials/` (highest priority)
-2. SDK default templates (fallback)
+- `src/views/*.hbs` — the body of each page. All six are required.
+- `src/partials/head.hbs` — rendered at the END of the SDK's `__head.hbs` via `{{> head}}`, so
+  package tags come after the SDK's. **It does not replace `__head.hbs`.**
+- `src/partials/scripts.hbs` — same, at the end of the body. Must exist; may be empty.
+- `src/assets/translations/*.json` — one file per locale. **Read verbatim with no fallback to SDK
+  defaults**: a missing key renders the literal string `Missing translation: some.key`.
+- `src/assets/metadata.json` — `org.name`, `org.favicon`, and anything else, available to all
+  templates.
+
+### ZeroBias brand chrome
+
+The favicon and "Powered by ZeroBias" lockup come from `cdn.zerobias.com` via the SDK. Packages do
+not commit copies. Override the favicon by setting `org.favicon` in `metadata.json` — not by adding
+a `<link rel="icon">`.
 
 ---
 
@@ -75,41 +83,55 @@ export ZB_TOKEN="your-api-key-here"
 echo 'export ZB_TOKEN="your-api-key-here"' >> ~/.bashrc
 ```
 
+Requires Node 22.21.1+ (the SDK's `engines` floor).
+
 **2. Create new login package:**
 ```bash
-# Copy example
-cp -r package/miraxr package/my-company
+# Copy the starter — NOT miraxr or workworlds, both of which are years out of
+# date and still depend on the deprecated @auditmation scope.
+cp -r package/login-starter package/my-company
 
 cd package/my-company
 
 # Update package.json
-# Change name to @zerobias-org/login-my-company
-# Update version, description, etc.
+# Change name to @zerobias-org/login-my-company, drop "private": true
+# Update description
 
-# Install dependencies
+# Install dependencies (needs ZB_TOKEN + the package's .npmrc — keep that file)
 npm install
 ```
 
+`package/login-starter/README.md` carries the authoritative customization checklist.
+
 **3. Local development:**
 ```bash
-# Edit server.js for local dev (if using server mode)
-# Change basePath from '/:domain' to ''
+# Build and start the local dev server with API proxy
+npm run dev
 
-# Build and start local server
-npm start
+# Navigate to http://localhost:8080/en_us/login.html
 
-# Navigate to http://localhost:8080
+# Proxy targets: dev -> api.uat (default), dev:qa, dev:prod,
+# or PROXY_TARGET=https://api.example.zerobias.com npm run dev
 ```
+
+Sign-in cannot complete locally — API calls return `401` without platform session context. That is
+expected. Local development covers layout, styling, and copy; the real flow is tested on a deployed
+environment.
 
 **4. Customize templates:**
-```bash
-# Copy templates from SDK to override
-cp node_modules/@auditmation/dana-login-sdk/views/login.hbs src/views/
-cp node_modules/@auditmation/dana-login-sdk/partials/head.hbs src/partials/
 
-# Edit templates with your branding
+The starter already contains all six views plus both required partials — edit them in place. There
+is nothing to copy out of the SDK, and no `views` directory exists there to copy from.
+
+```bash
+# Edit src/views/*.hbs with your branding
+# Replace src/assets/visuals/logo.svg
+# Update every user-facing string in src/assets/translations/en_US.json
 # Add custom CSS to src/assets/custom.css
 ```
+
+Change translation **values**; never delete keys. There is no fallback to SDK defaults, so a missing
+key renders the literal string `Missing translation: some.key` on the page.
 
 **5. Build for deployment:**
 ```bash
@@ -196,19 +218,18 @@ button[type="submit"]:hover {
 ```
 
 **Link custom CSS (src/partials/head.hbs):**
+
+This partial is a *fragment*, not a whole `<head>` — the SDK supplies the document shell and its own
+stylesheets, then renders this at the end via `{{> head}}`. Add only what you need:
+
 ```handlebars
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{title}}</title>
-
-  <!-- SDK default styles -->
-  <link rel="stylesheet" href="/public/styles.css">
-
-  <!-- Custom styles -->
-  <link rel="stylesheet" href="/assets/custom.css">
-</head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/assets/custom.css" />
 ```
+
+Do not add a `<link rel="icon">` here — the SDK supplies the favicon from the ZeroBias CDN. To use
+your own, set `org.favicon` in `src/assets/metadata.json`.
 
 ---
 
@@ -373,7 +394,7 @@ npm run lerna:test
 
 1. **Start with minimal overrides:** Only override what you need to customize
 2. **Keep authentication logic intact:** Don't modify form actions or required fields
-3. **Test all pages:** Login, MFA, password reset, email verification
+3. **Test all six pages:** `login`, `access_denied`, `eula`, `request_access`, `session_expired`, `shared_session`
 4. **Mobile responsive:** Ensure templates work on all devices
 5. **Accessibility:** Include ARIA labels, keyboard navigation
 
@@ -397,10 +418,14 @@ npm run lerna:test
 
 ### SDK Version
 
-Login packages depend on `@auditmation/dana-login-sdk`:
-- Check SDK version in package.json
-- Update SDK for new features or security patches
-- Review SDK changelog before upgrading
+Login packages depend on `@zerobias-com/dana-login-sdk`, published to `pkg.zerobias.org`:
+- Check the SDK version in the package's `package.json`
+- Update the SDK for new features or security patches
+- Review the SDK changelog before upgrading
+
+The older `@auditmation/dana-login-sdk` scope is **deprecated**. `miraxr` and `workworlds` still pin
+it (`0.7.2` and `0.5.8`) and are not valid references for new work — copy `package/login-starter`
+instead.
 
 ### Template Changes
 
@@ -428,34 +453,38 @@ Each custom login requires:
 # 1. Set up
 export ZB_TOKEN="your-token"
 cd package
-cp -r miraxr acme-corp
+cp -r login-starter acme-corp
 cd acme-corp
 
 # 2. Update package.json
 # name: "@zerobias-org/login-acme-corp"
-# version: "1.0.0"
+# remove "private": true
+# update description
 
-# 3. Install
+# 3. Install (keep .npmrc — npm install 404s without it)
 npm install
 
-# 4. Add branding
-mkdir -p src/assets
-# Add logo.png, custom.css
+# 4. Run it before changing anything, to confirm the setup works
+npm run dev
+# http://localhost:8080/en_us/login.html
 
-# 5. Override templates
-cp node_modules/@auditmation/dana-login-sdk/views/login.hbs src/views/
-cp node_modules/@auditmation/dana-login-sdk/partials/head.hbs src/partials/
+# 5. Add branding
+# Replace src/assets/visuals/logo.svg
+# Edit src/assets/custom.css — brand tokens are in :root at the top
 
-# 6. Customize
-# Edit src/views/login.hbs - add logo, change text
-# Edit src/assets/custom.css - add company colors
+# 6. Customize copy
+# Edit src/assets/metadata.json      — org.name
+# Edit src/assets/translations/en_US.json — every user-facing string, including
+#   footer.privacy_policy_url / terms_of_use_url / help_url, which otherwise
+#   ship as dead links
+# Edit src/views/*.hbs as needed
 
 # 7. Build
 npm run build
 
-# 8. Deploy
-aws s3 sync dist/ s3://zerobias-login/acme-corp/
-aws cloudfront create-invalidation --distribution-id XXX --paths "/acme-corp/*"
+# 8. Deploy — open a PR to the uat branch. Merging triggers Dispatch Deploys,
+#    which detects the changed package and runs Deploy App for it.
+#    Promote by opening the same branch against qa, then main.
 
 # 9. Configure
 # Register login.acme.com in Dana
@@ -510,12 +539,12 @@ aws cloudfront create-invalidation --distribution-id XXX --paths "/acme-corp/*"
 
 ## Related Documentation
 
-- **[Root CLAUDE.md](../../CLAUDE.md)** - Meta-repo guidance
-- **[auditmation/dana/CLAUDE.md](../../auditmation/dana/CLAUDE.md)** - Authentication service
-- **[auditmation/devops/CLAUDE.md](../../auditmation/devops/CLAUDE.md)** - Deployment workflows
-- **[package/miraxr/README.md](package/miraxr/README.md)** - Example login package
-- **[README.md](README.md)** - Repository overview
-- **Dana Login SDK** - NPM package documentation
+- **[package/login-starter/README.md](package/login-starter/README.md)** - the copy-me template and
+  its customization checklist (start here)
+- **[AGENTS.md](AGENTS.md)** - instructions for AI assistants working in this repo
+- **[README.md](README.md)** - repository overview
+- **Dana Login SDK** - `@zerobias-com/dana-login-sdk`, source in `zerobias-com/dana` under
+  `login-sdk/`
 
 ---
 
