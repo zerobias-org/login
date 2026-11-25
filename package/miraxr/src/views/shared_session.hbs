@@ -1,5 +1,5 @@
 <section class="logo-container">
-    <img src="{{{org.avatar}}}" alt="{{{org.name}}}" height="30" />
+    <img src="/assets/visuals/Logo.png" alt="{{{org.name}}}" height="250px" width="250px" />
 </section>
 <section class="input-container" id="shared-session-login-partial">
     <section class="text-container">
@@ -11,6 +11,9 @@
     <i class="fa fa-key"></i>
     <input type="text" class="email-input shared-session-key-input" placeholder="{{{__ "shared_session.shared_session_form.key_placeholder"}}}" id="shared-session-key" autocomplete="off" autofocus/>
 </section>
+<section class="link-container">
+    <a href="javascript: void(0)" id="navigate-to-login-link">{{{__ "login.login_form.navigate_to_login_label"}}}</a>
+</section>
 <section class="buttons-container">
     <button class="primary disabled" id="shared-session-login-btn">
         {{{__ "shared_session.shared_session_form.next_btn"}}}
@@ -20,6 +23,4 @@
     </button>
     <p class="err-container"></p>
 </section>
-<section class="link-container">
-    <a href="javascript: void(0)" id="navigate-to-login-link">{{{__ "login.login_form.navigate_to_login_label"}}}</a>
-</section>
+
